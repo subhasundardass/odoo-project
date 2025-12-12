@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_transport_booking,Transport Booking,model_transport_booking,base.group_user,1,1,1,1
+access_transport_party,Transport Party,model_transport_party,base.group_user,1,1,1,1
+access_transport_goods_line,Transport Goods Line,model_transport_goods_line,base.group_user,1,1,1,1
+access_transport_good_type,Transport Good Type,model_transport_goods_type,base.group_user,1,1,1,1
+access_transport_location,Transport Location,model_transport_location,base.group_user,1,1,1,1
+access_transport_movement,Transport Movement,model_transport_movement,base.group_user,1,1,1,1
+access_transport_route,Transport Route,model_transport_route,base.group_user,1,1,1,1
+access_transport_movement_leg,Transport Movement Leg,model_transport_movement_leg,base.group_user,1,1,1,1
+access_transport_route_template,Transport Route Template,model_transport_route_template,base.group_user,1,1,1,1
+access_transport_city,Transport City,model_transport_city,base.group_user,1,1,1,1
+access_transport_delivery,Transport Delivery,model_transport_delivery,base.group_user,1,1,1,1

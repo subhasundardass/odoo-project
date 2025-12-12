@@ -1,0 +1,139 @@
+<odoo>
+    <!-- QWeb Template -->
+    <template id="transport_booking_bill_template">
+        <t t-call="web.external_layout">
+
+            <main>
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page" style="">
+
+                        <!-- ✅ TITLE -->
+                        <h3 style="text-align:center; margin-bottom:16px; border-bottom:0px solid #000; padding-bottom:6px;">
+                        Booking Bill / Invoice
+                        </h3>
+
+                        <!-- ✅ BASIC INFO -->
+                        <table width="100%" border="1" cellspacing="0" cellpadding="6">
+                            <tr>
+                                <td width="70%">
+                                    <strong>Transport Agency Name</strong>
+                                    <br/>
+Address Line 1<br/>
+Address Line 2<br/>
+Phone: +919898989898<br/>
+GSTIN: GSTN34534U43
+                        </td>
+
+                        <td width="30%">
+                            <strong>Invoice No:</strong> INV-001<br/>
+                        <strong>Date:</strong> 01-12-2025<br/>
+                    <strong>Booking No:</strong> LR/25/2541<br/>
+                <strong>Vehicle No:</strong> WB-74-U4521
+            </td>
+        </tr>
+    </table>
+    <br/>
+
+    <!-- =========================
+     CONSIGNOR / CONSIGNEE ========================== -->
+    <table style="width:100%; margin-bottom:16px; border:1px solid #000;">
+        <tr>
+            <td width="50%" style="padding:6px;">
+                <strong>Consignor (Sender)</strong>
+                <br/>
+                M/s. Bhuban Enterprise<br/>
+                Bidhan Market, Siliguri - 734001<br/>
+                GSTIN: GSTN2384320432
+        </td>
+        <td width="50%" style="padding:6px;">
+            <strong>Consignee (Receiver)</strong>
+            <br/>
+                Bijoy Electronics<br/>
+                Chowpathi, Alipurduar- 734005<br/>
+                GSTIN: GST2342304U675
+    </td>
+</tr>
+</table>
+
+
+<!-- ✅ CUSTOMER DETAILS -->
+<table style="width:100%; font-size:13px; margin-bottom:16px; border:1px solid #000;">
+<tr style="background:#f2f2f2;">
+    <td colspan="7" style="padding:6px; font-weight:700;">
+                                Good Details
+    </td>
+</tr>
+<tr>
+    <td style="padding:6px; width:30%;">
+        <strong>Good Information</strong>
+    </td>
+    <td style="padding:6px;">
+        <strong>Invoice</strong>
+    </td>
+    <td style="padding:6px;">
+        <strong>Qty</strong>
+    </td>
+
+    <td style="padding:6px;">
+        <strong>Weight</strong>
+    </td>
+    <td style="padding:6px;">
+        <strong>Unit</strong>
+    </td>
+    <td style="padding:6px;">
+        <strong>Value</strong>
+    </td>
+    <td style="padding:6px;" t-esc="doc.partner_id.name"/>
+</tr>
+
+</table>
+
+<!-- ✅ AMOUNT SUMMARY -->
+<table style="width:60%; font-size:13px; margin-left:auto; border:1px solid #000;">
+<tr style="background:#f2f2f2;">
+    <td colspan="2" style="padding:6px; font-weight:700;">
+                                Amount Summary
+    </td>
+</tr>
+<tr>
+    <td style="padding:6px;">Total Amount</td>
+    <td style="padding:6px; text-align:right;">
+                                ₹        <t t-esc="doc.total_amount"/>
+    </td>
+</tr>
+<tr>
+    <td style="padding:6px;">Advance Paid</td>
+    <td style="padding:6px; text-align:right;">
+                                ₹        <t t-esc="doc.advance_amount"/>
+    </td>
+</tr>
+<tr style="font-weight:700; border-top:1px solid #000;">
+    <td style="padding:6px;">Balance Due</td>
+    <td style="padding:6px; text-align:right; color:#d32f2f;">
+                                ₹        <t t-esc="doc.balance_amount"/>
+    </td>
+</tr>
+</table>
+
+<!-- ✅ FOOTER NOTE -->
+<p style="font-size:11px; margin-top:20px;">
+<strong>Note:</strong> This is a system generated invoice.
+</p>
+
+</div>
+</t>
+</main>
+</t>
+</template>
+
+<!-- Report Action -->
+<record id="action_transport_booking_bill" model="ir.actions.report">
+<field name="name">Transport Booking Bill</field>
+<field name="model">transport.booking</field>
+<field name="report_type">qweb-pdf</field>
+<field name="report_name">transport_agency.transport_booking_bill_template</field>
+<field name="report_file">transport_agency.transport_booking_bill_template</field>
+<field name="print_report_name">'Booking Bill - %s' % (object.name)</field>
+</record>
+
+</odoo>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================= -->
+    <!-- TATA MOTORS -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_model_tata_407" model="fleet.vehicle.model">
+        <field name="name">Tata 407</field>
+        <field name="brand_id" ref="vehicle_manufacturer_tata"/>
+    </record>
+    <record id="fleet_vehicle_model_tata_1613" model="fleet.vehicle.model">
+        <field name="name">Tata 1613</field>
+        <field name="brand_id" ref="vehicle_manufacturer_tata"/>
+    </record>
+    <record id="fleet_vehicle_model_tata_2518" model="fleet.vehicle.model">
+        <field name="name">Tata 2518</field>
+        <field name="brand_id" ref="vehicle_manufacturer_tata"/>
+    </record>
+    <record id="fleet_vehicle_model_tata_3123" model="fleet.vehicle.model">
+        <field name="name">Tata 3123</field>
+        <field name="brand_id" ref="vehicle_manufacturer_tata"/>
+    </record>
+
+    <!-- ============================= -->
+    <!-- ASHOK LEYLAND -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_model_ashok_leyland_5000" model="fleet.vehicle.model">
+        <field name="name">Ashok Leyland 5000</field>
+        <field name="brand_id" ref="vehicle_manufacturer_ashok_leyland"/>
+    </record>
+    <record id="fleet_vehicle_model_ashok_leyland_1616" model="fleet.vehicle.model">
+        <field name="name">Ashok Leyland 1616</field>
+        <field name="brand_id" ref="vehicle_manufacturer_ashok_leyland"/>
+    </record>
+    <record id="fleet_vehicle_model_ashok_leyland_2518" model="fleet.vehicle.model">
+        <field name="name">Ashok Leyland 2518</field>
+        <field name="brand_id" ref="vehicle_manufacturer_ashok_leyland"/>
+    </record>
+
+    <!-- ============================= -->
+    <!-- MAHINDRA -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_model_mahindra_10t" model="fleet.vehicle.model">
+        <field name="name">Mahindra 10T</field>
+        <field name="brand_id" ref="vehicle_manufacturer_mahindra"/>
+    </record>
+    <record id="fleet_vehicle_model_mahindra_16t" model="fleet.vehicle.model">
+        <field name="name">Mahindra 16T</field>
+        <field name="brand_id" ref="vehicle_manufacturer_mahindra"/>
+    </record>
+
+    <!-- ============================= -->
+    <!-- EICHER -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_model_eicher_12t" model="fleet.vehicle.model">
+        <field name="name">Eicher 12T</field>
+        <field name="brand_id" ref="vehicle_manufacturer_eicher"/>
+    </record>
+    <record id="fleet_vehicle_model_eicher_18t" model="fleet.vehicle.model">
+        <field name="name">Eicher 18T</field>
+        <field name="brand_id" ref="vehicle_manufacturer_eicher"/>
+    </record>
+
+    <!-- ============================= -->
+    <!-- BHARATBENZ -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_model_bharatbenz_1214" model="fleet.vehicle.model">
+        <field name="name">BharatBenz 1214</field>
+        <field name="brand_id" ref="vehicle_manufacturer_bharat_benz"/>
+    </record>
+    <record id="fleet_vehicle_model_bharatbenz_2518" model="fleet.vehicle.model">
+        <field name="name">BharatBenz 2518</field>
+        <field name="brand_id" ref="vehicle_manufacturer_bharat_benz"/>
+    </record>
+
+    <!-- ============================= -->
+    <!-- SML ISUZU -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_model_sml_isuzu_12t" model="fleet.vehicle.model">
+        <field name="name">SML Isuzu 12T</field>
+        <field name="brand_id" ref="vehicle_manufacturer_sml_isuzu"/>
+    </record>
+    <record id="fleet_vehicle_model_sml_isuzu_18t" model="fleet.vehicle.model">
+        <field name="name">SML Isuzu 18T</field>
+        <field name="brand_id" ref="vehicle_manufacturer_sml_isuzu"/>
+    </record>
+
+    <!-- ============================= -->
+    <!-- MINI TRUCKS / PICKUPS -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_model_tata_ace" model="fleet.vehicle.model">
+        <field name="name">Tata Ace</field>
+        <field name="brand_id" ref="vehicle_manufacturer_tata"/>
+    </record>
+    <record id="fleet_vehicle_model_mahindra_supro" model="fleet.vehicle.model">
+        <field name="name">Mahindra Supro</field>
+        <field name="brand_id" ref="vehicle_manufacturer_mahindra"/>
+    </record>
+
+    <!-- ============================= -->
+    <!-- TIPPERS -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_model_tata_tipper" model="fleet.vehicle.model">
+        <field name="name">Tata Tipper</field>
+        <field name="brand_id" ref="vehicle_manufacturer_tata"/>
+    </record>
+    <record id="fleet_vehicle_model_ashok_tipper" model="fleet.vehicle.model">
+        <field name="name">Ashok Leyland Tipper</field>
+        <field name="brand_id" ref="vehicle_manufacturer_ashok_leyland"/>
+    </record>
+
+    <!-- ============================= -->
+    <!-- TANKERS -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_model_tata_tanker" model="fleet.vehicle.model">
+        <field name="name">Tata Tanker</field>
+        <field name="brand_id" ref="vehicle_manufacturer_tata"/>
+    </record>
+    <record id="fleet_vehicle_model_bharatbenz_tanker" model="fleet.vehicle.model">
+        <field name="name">BharatBenz Tanker</field>
+        <field name="brand_id" ref="vehicle_manufacturer_bharat_benz"/>
+    </record>
+
+</odoo>

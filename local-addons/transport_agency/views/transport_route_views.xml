@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_transport_route" model="ir.actions.act_window">
+        <field name="name">Routes</field>
+        <field name="res_model">transport.route</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_transport_route_tree" model="ir.ui.view">
+        <field name="name">transport.route.tree</field>
+        <field name="model">transport.route</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="source_location_id"/>
+                <field name="destination_location_id"/>
+                <field name="responsible_by"/>
+                <field name="transit_time"/>
+                <field name="cost"/>
+                <field name="distance_km"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_transport_route_form" model="ir.ui.view">
+        <field name="name">transport.route.form</field>
+        <field name="model">transport.route</field>
+        <field name="arch" type="xml">
+            <form string="Route">
+                <sheet>
+                    <group>
+                        <field name="source_location_id"/>
+                        <field name="destination_location_id"/>
+                    </group>
+
+                    <group>
+                        <field name="responsible_by"/>
+                    </group>
+
+                    <group string="Routing Info">
+                        <field name="transit_time"/>
+                        <field name="cost"/>
+                        <field name="distance_km"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>

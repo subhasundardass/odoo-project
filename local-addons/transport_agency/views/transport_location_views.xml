@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_transport_location_tree" model="ir.ui.view">
+        <field name="name">transport.location.tree</field>
+        <field name="model">transport.location</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="owner_type"/>
+                <field name="location_type"/>
+                <field name="city_id"/>
+                <field name="state_id"/>
+                <field name="country_id"/>
+                <field name="parent_hub_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_transport_location_form" model="ir.ui.view">
+        <field name="name">transport.location.form</field>
+        <field name="model">transport.location</field>
+        <field name="arch" type="xml">
+            <form string="Location">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="owner_type"/>
+                            <field name="location_type"/>
+                        </group>
+                        <group>
+                            <field name="city_id"/>
+                            <field name="state_id"/>
+                            <field name="country_id"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="parent_hub_id" attrs="{'invisible': [('location_type','!=','spoke')]}"/>
+                        <field name="partner_id" attrs="{'invisible': [('owner_type','!=','customer')]}"/>
+                    </group>
+
+                    <group>
+                        <field name="address"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ===================================================== -->
+    <!-- ACTION                                                 -->
+    <!-- ===================================================== -->
+    <record id="action_transport_location" model="ir.actions.act_window">
+        <field name="name">Transport Locations</field>
+        <field name="res_model">transport.location</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

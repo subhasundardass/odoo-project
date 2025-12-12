@@ -1,0 +1,44 @@
+
+{
+  "name": "Odoo 15 Dev",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "web",
+  "workspaceFolder": "/mnt/extra-addons",
+
+  "remoteUser": "root",
+
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+
+  "containerEnv": {
+    "HOME": "/root"
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "DotJoshJohnson.xml",
+        "ReprEng.csv",
+        "trinhanhngoc.vscode-odoo"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/bin/python3",
+        "editor.formatOnSave": true,
+        
+      },
+      "[xml]": {
+        "editor.defaultFormatter": "DotJoshJohnson.xml",
+        "editor.formatOnSave": true
+      },
+      "[python]": {
+        "editor.formatOnSave": true
+      },
+    }
+  }
+
+  
+}

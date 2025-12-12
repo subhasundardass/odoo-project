@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================= -->
+    <!-- PICKUP -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_demo_pickup_01" model="fleet.vehicle">
+        <field name="name">Tata Ace Pickup OD02PV1122</field>
+        <field name="model_id" ref="fleet_vehicle_model_tata_ace"/>
+        <field name="license_plate">OD02PV1122</field>
+        <field name="fuel_type">diesel</field>
+        <field name="odometer">42000</field>
+        <field name="acquisition_date">2023-03-15</field>
+    </record>
+
+    <!-- ============================= -->
+    <!-- MINI TRUCK -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_demo_mini_truck_01" model="fleet.vehicle">
+        <field name="name">Ashok Dost Mini Truck WB11MT4455</field>
+        <field name="model_id" ref="fleet_vehicle_model_ashok_leyland_dost"/>
+        <field name="license_plate">WB11MT4455</field>
+        <field name="fuel_type">diesel</field>
+        <field name="odometer">61000</field>
+        <field name="acquisition_date">2022-08-10</field>
+    </record>
+
+    <!-- ============================= -->
+    <!-- NORMAL TRUCK -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_demo_truck_01" model="fleet.vehicle">
+        <field name="name">Tata 1210 Truck JH02TR7788</field>
+        <field name="model_id" ref="fleet_vehicle_model_tata_1210"/>
+        <field name="license_plate">JH02TR7788</field>
+        <field name="fuel_type">diesel</field>
+        <field name="odometer">145000</field>
+        <field name="acquisition_date">2021-04-20</field>
+    </record>
+
+    <!-- ============================= -->
+    <!-- 10 WHEELER -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_demo_10w_01" model="fleet.vehicle">
+        <field name="name">Tata 1613 10W UP32TR1613</field>
+        <field name="model_id" ref="fleet_vehicle_model_tata_1613"/>
+        <field name="license_plate">UP32TR1613</field>
+        <field name="fuel_type">diesel</field>
+        <field name="odometer">185000</field>
+        <field name="acquisition_date">2021-09-12</field>
+    </record>
+
+    <!-- ============================= -->
+    <!-- 14 WHEELER -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_demo_14w_01" model="fleet.vehicle">
+        <field name="name">Tata 2518 14W MH12TR2518</field>
+        <field name="model_id" ref="fleet_vehicle_model_tata_2518"/>
+        <field name="license_plate">MH12TR2518</field>
+        <field name="fuel_type">diesel</field>
+        <field name="odometer">240000</field>
+        <field name="acquisition_date">2020-11-05</field>
+    </record>
+
+    <!-- ============================= -->
+    <!-- 18 WHEELER -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_demo_18w_01" model="fleet.vehicle">
+        <field name="name">Tata 3123 18W RJ14TR3123</field>
+        <field name="model_id" ref="fleet_vehicle_model_tata_3123"/>
+        <field name="license_plate">RJ14TR3123</field>
+        <field name="fuel_type">diesel</field>
+        <field name="odometer">315000</field>
+        <field name="acquisition_date">2019-07-18</field>
+    </record>
+
+    <!-- ============================= -->
+    <!-- CONTAINER TRUCK -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_demo_container_01" model="fleet.vehicle">
+        <field name="name">BharatBenz Container GJ01CT3344</field>
+        <field name="model_id" ref="fleet_vehicle_model_bharatbenz_container"/>
+        <field name="license_plate">GJ01CT3344</field>
+        <field name="fuel_type">diesel</field>
+        <field name="odometer">270000</field>
+        <field name="acquisition_date">2020-03-30</field>
+    </record>
+
+    <!-- ============================= -->
+    <!-- TANKER -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_demo_tanker_01" model="fleet.vehicle">
+        <field name="name">Ashok Leyland Tanker CG04TN9900</field>
+        <field name="model_id" ref="fleet_vehicle_model_ashok_leyland_tanker"/>
+        <field name="license_plate">CG04TN9900</field>
+        <field name="fuel_type">diesel</field>
+        <field name="odometer">260000</field>
+        <field name="acquisition_date">2020-06-10</field>
+    </record>
+
+    <!-- ============================= -->
+    <!-- TIPPER -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_demo_tipper_01" model="fleet.vehicle">
+        <field name="name">Tata Tipper OJ05TP6677</field>
+        <field name="model_id" ref="fleet_vehicle_model_tata_tipper"/>
+        <field name="license_plate">OD05TP6677</field>
+        <field name="fuel_type">diesel</field>
+        <field name="odometer">195000</field>
+        <field name="acquisition_date">2021-01-22</field>
+    </record>
+
+    <!-- ============================= -->
+    <!-- REFRIGERATED TRUCK -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_demo_reefer_01" model="fleet.vehicle">
+        <field name="name">Eicher Reefer KA01RF7766</field>
+        <field name="model_id" ref="fleet_vehicle_model_eicher_reefer"/>
+        <field name="license_plate">KA01RF7766</field>
+        <field name="fuel_type">diesel</field>
+        <field name="odometer">168000</field>
+        <field name="acquisition_date">2021-05-19</field>
+    </record>
+
+    <!-- ============================= -->
+    <!-- FLATBED / OPEN TRUCK -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_demo_flatbed_01" model="fleet.vehicle">
+        <field name="name">Ashok Open Truck BR01OT4455</field>
+        <field name="model_id" ref="fleet_vehicle_model_ashok_leyland_flatbed"/>
+        <field name="license_plate">BR01OT4455</field>
+        <field name="fuel_type">diesel</field>
+        <field name="odometer">182000</field>
+        <field name="acquisition_date">2020-10-14</field>
+    </record>
+
+    <!-- ============================= -->
+    <!-- TRAILER -->
+    <!-- ============================= -->
+    <record id="fleet_vehicle_demo_trailer_01" model="fleet.vehicle">
+        <field name="name">Volvo Trailer HR38TR8899</field>
+        <field name="model_id" ref="fleet_vehicle_model_volvo_trailer"/>
+        <field name="license_plate">HR38TR8899</field>
+        <field name="fuel_type">diesel</field>
+        <field name="odometer">345000</field>
+        <field name="acquisition_date">2019-02-02</field>
+    </record>
+
+</odoo>

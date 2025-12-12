@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ========================= -->
+    <!-- ✅ GENERAL PACKING TYPES -->
+    <!-- ========================= -->
+
+    <record id="goods_box" model="transport.goods.type">
+        <field name="name">Box</field>
+        <field name="code">BOX</field>
+        <field name="default_risk_type">owner</field>
+    </record>
+
+    <record id="goods_bag" model="transport.goods.type">
+        <field name="name">Bag</field>
+        <field name="code">BAG</field>
+        <field name="default_risk_type">owner</field>
+    </record>
+
+    <record id="goods_carton" model="transport.goods.type">
+        <field name="name">Carton</field>
+        <field name="code">CTN</field>
+        <field name="default_risk_type">owner</field>
+    </record>
+
+    <record id="goods_bundle" model="transport.goods.type">
+        <field name="name">Bundle</field>
+        <field name="code">BND</field>
+        <field name="default_risk_type">owner</field>
+    </record>
+
+    <record id="goods_pallet" model="transport.goods.type">
+        <field name="name">Pallet</field>
+        <field name="code">PLT</field>
+        <field name="default_risk_type">owner</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- ✅ AGRICULTURE PRODUCTS -->
+    <!-- ========================= -->
+
+    <record id="goods_rice" model="transport.goods.type">
+        <field name="name">Rice</field>
+        <field name="code">RICE</field>
+        <field name="default_risk_type">owner</field>
+    </record>
+
+    <record id="goods_wheat" model="transport.goods.type">
+        <field name="name">Wheat</field>
+        <field name="code">WHT</field>
+        <field name="default_risk_type">owner</field>
+    </record>
+
+    <record id="goods_maize" model="transport.goods.type">
+        <field name="name">Maize</field>
+        <field name="code">MAZ</field>
+        <field name="default_risk_type">owner</field>
+    </record>
+
+    <record id="goods_potato" model="transport.goods.type">
+        <field name="name">Potato</field>
+        <field name="code">POT</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <record id="goods_onion" model="transport.goods.type">
+        <field name="name">Onion</field>
+        <field name="code">ONN</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <record id="goods_fruits" model="transport.goods.type">
+        <field name="name">Fruits</field>
+        <field name="code">FRT</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <record id="goods_vegetables" model="transport.goods.type">
+        <field name="name">Vegetables</field>
+        <field name="code">VEG</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- ✅ CONSTRUCTION MATERIAL -->
+    <!-- ========================= -->
+
+    <record id="goods_cement" model="transport.goods.type">
+        <field name="name">Cement</field>
+        <field name="code">CEM</field>
+        <field name="default_risk_type">owner</field>
+    </record>
+
+    <record id="goods_steel" model="transport.goods.type">
+        <field name="name">Steel</field>
+        <field name="code">STL</field>
+        <field name="default_risk_type">owner</field>
+    </record>
+
+    <record id="goods_sand" model="transport.goods.type">
+        <field name="name">Sand</field>
+        <field name="code">SAND</field>
+        <field name="default_risk_type">owner</field>
+    </record>
+
+    <record id="goods_bricks" model="transport.goods.type">
+        <field name="name">Bricks</field>
+        <field name="code">BRK</field>
+        <field name="default_risk_type">owner</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- ✅ LIQUIDS & FUEL -->
+    <!-- ========================= -->
+
+    <record id="goods_petrol" model="transport.goods.type">
+        <field name="name">Petrol</field>
+        <field name="code">PET</field>
+        <field name="default_risk_type">carrier</field>
+        <field name="is_hazardous">1</field>
+    </record>
+
+    <record id="goods_diesel" model="transport.goods.type">
+        <field name="name">Diesel</field>
+        <field name="code">DSL</field>
+        <field name="default_risk_type">carrier</field>
+        <field name="is_hazardous">1</field>
+    </record>
+
+    <record id="goods_oil" model="transport.goods.type">
+        <field name="name">Industrial Oil</field>
+        <field name="code">OIL</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <record id="goods_water" model="transport.goods.type">
+        <field name="name">Water</field>
+        <field name="code">WTR</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- ✅ HAZARDOUS & CHEMICAL -->
+    <!-- ========================= -->
+
+    <record id="goods_chemical" model="transport.goods.type">
+        <field name="name">Chemical</field>
+        <field name="code">CHEM</field>
+        <field name="default_risk_type">carrier</field>
+        <field name="is_hazardous">1</field>
+    </record>
+
+    <record id="goods_gas" model="transport.goods.type">
+        <field name="name">Gas Cylinder</field>
+        <field name="code">GAS</field>
+        <field name="default_risk_type">carrier</field>
+        <field name="is_hazardous">1</field>
+    </record>
+
+    <record id="goods_battery" model="transport.goods.type">
+        <field name="name">Battery</field>
+        <field name="code">BAT</field>
+        <field name="default_risk_type">carrier</field>
+        <field name="is_hazardous">1</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- ✅ FMCG / FOOD -->
+    <!-- ========================= -->
+
+    <record id="goods_food" model="transport.goods.type">
+        <field name="name">Food Items</field>
+        <field name="code">FOOD</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <record id="goods_milk" model="transport.goods.type">
+        <field name="name">Milk Products</field>
+        <field name="code">MLK</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- ✅ ELECTRONICS & IT -->
+    <!-- ========================= -->
+
+    <record id="goods_electronics" model="transport.goods.type">
+        <field name="name">Electronics</field>
+        <field name="code">ELX</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <record id="goods_mobile" model="transport.goods.type">
+        <field name="name">Mobile Phones</field>
+        <field name="code">MOB</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- ✅ TEXTILE -->
+    <!-- ========================= -->
+
+    <record id="goods_clothes" model="transport.goods.type">
+        <field name="name">Garments</field>
+        <field name="code">CLTH</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <record id="goods_fabric" model="transport.goods.type">
+        <field name="name">Fabric Roll</field>
+        <field name="code">FAB</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- ✅ HOUSEHOLD -->
+    <!-- ========================= -->
+
+    <record id="goods_furniture" model="transport.goods.type">
+        <field name="name">Furniture</field>
+        <field name="code">FUR</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <record id="goods_appliance" model="transport.goods.type">
+        <field name="name">Home Appliances</field>
+        <field name="code">HAP</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- ✅ MEDICAL -->
+    <!-- ========================= -->
+
+    <record id="goods_medicine" model="transport.goods.type">
+        <field name="name">Medicine</field>
+        <field name="code">MED</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- ✅ AUTOMOBILE -->
+    <!-- ========================= -->
+
+    <record id="goods_vehicle" model="transport.goods.type">
+        <field name="name">Vehicle</field>
+        <field name="code">VEH</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <record id="goods_tyres" model="transport.goods.type">
+        <field name="name">Tyres</field>
+        <field name="code">TYR</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- ✅ COURIER -->
+    <!-- ========================= -->
+
+    <record id="goods_parcel" model="transport.goods.type">
+        <field name="name">Courier / Parcel</field>
+        <field name="code">CRP</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+    <record id="goods_documents" model="transport.goods.type">
+        <field name="name">Documents</field>
+        <field name="code">DOC</field>
+        <field name="default_risk_type">carrier</field>
+    </record>
+
+</odoo>

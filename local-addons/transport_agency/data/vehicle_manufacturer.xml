@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================= -->
+    <!-- TRUCK MANUFACTURERS (INDIA) -->
+    <!-- ============================= -->
+
+    <record id="vehicle_manufacturer_tata" model="fleet.vehicle.model.brand">
+        <field name="name">Tata Motors</field>
+    </record>
+
+    <record id="vehicle_manufacturer_ashok_leyland" model="fleet.vehicle.model.brand">
+        <field name="name">Ashok Leyland</field>
+    </record>
+
+    <record id="vehicle_manufacturer_mahindra" model="fleet.vehicle.model.brand">
+        <field name="name">Mahindra</field>
+    </record>
+
+    <record id="vehicle_manufacturer_eicher" model="fleet.vehicle.model.brand">
+        <field name="name">Eicher</field>
+    </record>
+
+    <record id="vehicle_manufacturer_bharat_benz" model="fleet.vehicle.model.brand">
+        <field name="name">BharatBenz</field>
+    </record>
+
+    <record id="vehicle_manufacturer_volvo" model="fleet.vehicle.model.brand">
+        <field name="name">Volvo Trucks</field>
+    </record>
+
+    <record id="vehicle_manufacturer_mercedes_benz" model="fleet.vehicle.model.brand">
+        <field name="name">Mercedes-Benz Trucks</field>
+    </record>
+
+    <record id="vehicle_manufacturer_tvs_truck" model="fleet.vehicle.model.brand">
+        <field name="name">TVS Trucks</field>
+    </record>
+
+    <record id="vehicle_manufacturer_sml_isuzu" model="fleet.vehicle.model.brand">
+        <field name="name">SML Isuzu</field>
+    </record>
+
+    <record id="vehicle_manufacturer_ashok_leyland_light" model="fleet.vehicle.model.brand">
+        <field name="name">Ashok Leyland Light Trucks</field>
+    </record>
+
+</odoo>

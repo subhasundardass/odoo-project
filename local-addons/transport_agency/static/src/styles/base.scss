@@ -1,0 +1,39 @@
+.o_form_sheet {
+    border-radius: 6px;
+}
+
+.o_main_navbar {
+    .o_menu_brand {
+        font-size: 17px;
+        font-weight: 700;
+    }
+}
+
+.o_control_panel {
+    .breadcrumb {
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .o_cp_action_menus {
+        margin-left: 0 !important;
+        margin-right: auto !important;
+        justify-content: flex-start !important;
+    }
+
+}
+
+/* Even row (2,4,6...) */
+.o_list_view table tbody tr:nth-child(even) {
+    background-color: #f7f7f7 !important;
+}
+
+/* Odd row (1,3,5...) */
+.o_list_view table tbody tr:nth-child(odd) {
+    background-color: #ffffff !important;
+}
+
+/* Optional: hover highlight */
+.o_list_view table tbody tr:hover {
+    background-color: #e6f2ff !important;
+}

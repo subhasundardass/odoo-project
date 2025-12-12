@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===================== -->
+    <!-- MAIN TRANSPORT MENU -->
+    <!-- ===================== -->
+    <menuitem id="menu_transport_root" name="Transport Agency" sequence="10"/>
+
+    <!-- ===================== -->
+    <!-- OPERATIONS MENU -->
+    <!-- ===================== -->
+    <menuitem id="menu_transport_operations" name="Operations" parent="menu_transport_root" sequence="1"/>
+
+    <menuitem id="menu_transport_booking" name="Customer Bookings" parent="menu_transport_operations" action="action_transport_booking" sequence="1"/>
+    <menuitem id="menu_transport_delivery" name="Delivery Management" parent="menu_transport_operations" action="action_transport_delivery" sequence="2"/>
+
+    <!-- <menuitem id="menu_transport_trip" name="Trips" parent="menu_transport_operations" action="action_dummy" sequence="2"/> -->
+
+
+
+    <!-- ===================== -->
+    <!-- ACCOUNTING MENU -->
+    <!-- ===================== -->
+    <!-- <menuitem id="menu_transport_accounts" name="Accounting" parent="menu_transport_root" sequence="3"/> -->
+
+    <!-- <menuitem id="menu_transport_customer_invoice" name="Customer Invoices" parent="menu_transport_accounts" action="account.action_move_out_invoice_type" sequence="1"/> -->
+
+    <!-- <menuitem id="menu_transport_vendor_bill" name="Vendor Bills" parent="menu_transport_accounts" action="account.action_move_in_invoice_type" sequence="2"/> -->
+
+
+
+    <!-- ===================== -->
+    <!-- Billing -->
+    <!-- ===================== -->
+    <menuitem id="menu_transport_billing" name="Billing" parent="menu_transport_root" sequence="50"/>
+    <menuitem id="menu_transport_billing_customer_invoices" name="Customer Invoices" parent="menu_transport_billing" action="action_dummy" sequence="1"/>
+    <menuitem id="menu_transport_billing_pending" name="Pending Billing" parent="menu_transport_billing" action="action_dummy" sequence="2"/>
+    <menuitem id="menu_transport_billing_consolidated" name="Consolidated Invoice" parent="menu_transport_billing" action="action_dummy" sequence="3"/>
+    <menuitem id="menu_transport_billing_vendor_bills" name="Vendor Bills" parent="menu_transport_billing" action="action_dummy" sequence="4"/>
+    <menuitem id="menu_transport_billing_customer_rate_master" name="Customer Rate Master" parent="menu_transport_billing" action="action_dummy" sequence="5"/>
+
+    <!-- ===================== -->
+    <!-- REPORTS MENU -->
+    <!-- ===================== -->
+    <menuitem id="menu_transport_reports" name="Reports" parent="menu_transport_root" sequence="60"/>
+    <menuitem id="menu_transport_report_customer_ledger" name="Customer Ledger" parent="menu_transport_reports" action="action_dummy" sequence="1"/>
+    <menuitem id="menu_transport_report_outstanding_bills" name="Outstanding Bills" parent="menu_transport_reports" action="action_dummy" sequence="2"/>
+    <menuitem id="menu_transport_report_monthly_sales" name="Monthly Sales" parent="menu_transport_reports" action="action_dummy" sequence="3"/>
+    <menuitem id="menu_transport_report_delivery_billing" name="Delivery &amp; Billing Status Report" parent="menu_transport_reports" action="action_dummy" sequence="4"/>
+    <menuitem id="menu_transport_report_gst_summary" name="GST Summary Report" parent="menu_transport_reports" action="action_dummy" sequence="5"/>
+
+    <!-- ===================== -->
+    <!-- MASTER DATA MENU -->
+    <!-- ===================== -->
+    <menuitem id="menu_transport_master" name="Masters" parent="menu_transport_root" sequence="80"/>
+    <menuitem id="menu_transport_city" name="Service City" parent="menu_transport_master" action="action_transport_city" sequence="5"/>
+    <menuitem id="menu_transport_location" name="Locations" parent="menu_transport_master" action="action_transport_location" sequence="10"/>
+    <menuitem id="menu_transport_movement" name="Movements" parent="menu_transport_master" action="action_transport_movement" sequence="20"/>
+    <menuitem id="menu_transport_route" name="Routes" parent="menu_transport_master" action="action_transport_route" sequence="30"/>
+
+
+    <!-- <menuitem id="menu_transport_vehicle" name="Vehicles" parent="menu_transport_master" action="action_transport_vehicle_list" sequence="1"/>
+    <menuitem id="menu_transport_driver" name="Drivers" parent="menu_transport_master" action="hr.open_view_employee_list" sequence="2"/>
+    <menuitem id="menu_transport_customer" name="Customers" parent="menu_transport_master" action="base.action_partner_form" sequence="3"/>
+    <menuitem id="menu_transport_vendor" name="Vendors" parent="menu_transport_master" action="base.action_partner_form" sequence="4"/> -->
+    <!-- ===================== -->
+    <!-- CONFIGURATION MENU -->
+    <!-- ===================== -->
+    <menuitem id="menu_transport_config" name="Configuration" parent="menu_transport_root" sequence="90"/>
+
+    <!-- <menuitem id="menu_transport_settings" name="Settings" parent="menu_transport_config" action="action_dummy" sequence="1"/> -->
+    <!-- <menuitem id="menu_transport_vehicle_manufacturer" name="Vehicle Manufacturer" parent="menu_transport_config" action="action_dummy" sequence="2"/> -->
+    <!-- <menuitem id="menu_transport_vehicle_category" name="Vehicle Category" parent="menu_transport_config" action="action_dummy" sequence="3"/> -->
+    <!-- <menuitem id="menu_transport_goods_type" name="Goods Types" parent="menu_transport_config" action="action_transport_goods_type"/> -->
+
+</odoo>

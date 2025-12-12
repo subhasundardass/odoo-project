@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Odoo 15 Debug (Docker)",
+      "type": "python",
+      "request": "launch",
+      "program": "/usr/bin/odoo",
+      "args": [
+        "-c",
+        "/etc/odoo/odoo.conf",
+        "--dev=reload"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": false
+    }
+  ]
+}

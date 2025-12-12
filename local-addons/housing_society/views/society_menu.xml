@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Main menu -->
+    <menuitem id="menu_society_root" name="Housing Society" sequence="1" />
+</odoo>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_transport_movement" model="ir.actions.act_window">
+        <field name="name">Movements</field>
+        <field name="res_model">transport.movement</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_transport_movement_tree" model="ir.ui.view">
+        <field name="name">transport.movement.tree</field>
+        <field name="model">transport.movement</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="pickup_location_id"/>
+                <field name="delivery_location_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_transport_movement_form" model="ir.ui.view">
+        <field name="name">transport.movement.form</field>
+        <field name="model">transport.movement</field>
+        <field name="arch" type="xml">
+            <form string="Movement">
+                <header>
+                    <button name="action_generate_legs" type="object" string="Generate Legs" class="btn-primary"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="pickup_location_id"/>
+                        <field name="delivery_location_id"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Legs">
+                            <field name="leg_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence"/>
+                                    <field name="from_location_id"/>
+                                    <field name="to_location_id"/>
+                                    <field name="carrier_type"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>

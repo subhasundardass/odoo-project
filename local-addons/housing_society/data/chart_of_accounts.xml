@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ===================== INCOME ACCOUNTS ===================== -->
+    <record id="hs_account_maintenance_income" model="account.account">
+        <field name="name">Maintenance Income</field>
+        <field name="code">40001</field>
+        <field name="user_type_id" ref="account.data_account_type_revenue" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_community_hall_income" model="account.account">
+        <field name="name">Community Hall Booking</field>
+        <field name="code">40002</field>
+        <field name="user_type_id" ref="account.data_account_type_revenue" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_penalty_income" model="account.account">
+        <field name="name">Penalty / Late Fee</field>
+        <field name="code">40003</field>
+        <field name="user_type_id" ref="account.data_account_type_revenue" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_submiter_income" model="account.account">
+        <field name="name">Submiter / Other Income</field>
+        <field name="code">40004</field>
+        <field name="user_type_id" ref="account.data_account_type_revenue" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+
+    <!-- ===================== EXPENSE ACCOUNTS ===================== -->
+    <record id="hs_account_electricity_expense" model="account.account">
+        <field name="name">Electricity Expense</field>
+        <field name="code">50001</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_water_expense" model="account.account">
+        <field name="name">Water Expense</field>
+        <field name="code">50002</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_lift_maintenance" model="account.account">
+        <field name="name">Lift Maintenance</field>
+        <field name="code">50003</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_security_expense" model="account.account">
+        <field name="name">Security Services</field>
+        <field name="code">50004</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_housekeeping_expense" model="account.account">
+        <field name="name">Housekeeping / Cleaning</field>
+        <field name="code">50005</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_gardening_expense" model="account.account">
+        <field name="name">Gardening / Landscaping</field>
+        <field name="code">50006</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_repairs_expense" model="account.account">
+        <field name="name">Repairs &amp; Renovation</field>
+        <field name="code">50007</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <!-- ✅ Salary Expense -->
+    <record id="hs_account_salary" model="account.account">
+        <field name="name">Salary Expense</field>
+        <field name="code">50008</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <!-- ✅ Salary Advance -->
+    <record id="hs_account_salary_advance" model="account.account">
+        <field name="name">Salary Advance</field>
+        <field name="code">12003</field>
+        <field name="user_type_id" ref="account.data_account_type_current_assets" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_bank_charges" model="account.account">
+        <field name="name">Bank Charges</field>
+        <field name="code">50009</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_legal_fees" model="account.account">
+        <field name="name">Legal / Professional Fees</field>
+        <field name="code">50010</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_insurance" model="account.account">
+        <field name="name">Insurance</field>
+        <field name="code">50011</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_generator_expense" model="account.account">
+        <field name="name">Generator / DG Set</field>
+        <field name="code">50012</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_internet_expense" model="account.account">
+        <field name="name">Internet / Wi-Fi</field>
+        <field name="code">50013</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="hs_account_miscellaneous_expense" model="account.account">
+        <field name="name">Miscellaneous Expenses</field>
+        <field name="code">50014</field>
+        <field name="user_type_id" ref="account.data_account_type_expenses" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <!-- ✅ Fixed Deposit Principal -->
+    <record id="hs_account_fd_principal" model="account.account">
+        <field name="name">Fixed Deposit (Asset)</field>
+        <field name="code">12001</field>
+        <field name="user_type_id" ref="account.data_account_type_fixed_assets" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <!-- ✅ Fixed Deposit Interest Income -->
+    <record id="hs_account_fd_interest" model="account.account">
+        <field name="name">FD Interest Income</field>
+        <field name="code">41001</field>
+        <field name="user_type_id" ref="account.data_account_type_revenue" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <!-- ✅ Loan Receivable -->
+    <record id="hs_account_loan_receivable" model="account.account">
+        <field name="name">Loan Receivable</field>
+        <field name="code">12002</field>
+        <field name="user_type_id" ref="account.data_account_type_receivable" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <!-- ✅ Loan Interest Income -->
+    <record id="hs_account_loan_interest_income" model="account.account">
+        <field name="name">Loan Interest Income</field>
+        <field name="code">41002</field>
+        <field name="user_type_id" ref="account.data_account_type_revenue" />
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+
+</odoo>

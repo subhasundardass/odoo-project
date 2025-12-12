@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ✅ MAINTENANCE SALES JOURNAL -->
+    <record id="hs_maintenance_journal" model="account.journal">
+        <field name="name">Maintenance Income</field>
+        <field name="code">MTN</field>
+        <field name="type">sale</field>
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <!-- ✅ COMMUNITY HALL BOOKING JOURNAL -->
+    <record id="hs_community_hall_journal" model="account.journal">
+        <field name="name">Community Hall Booking</field>
+        <field name="code">CHB</field>
+        <field name="type">sale</field>
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <!-- ✅ VENDOR PAYMENT / PURCHASE JOURNAL -->
+    <record id="hs_vendor_purchase_journal" model="account.journal">
+        <field name="name">Vendor Payments</field>
+        <field name="code">VND</field>
+        <field name="type">purchase</field>
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <!-- ✅ PENALTY CHARGES JOURNAL -->
+    <record id="hs_penalty_journal" model="account.journal">
+        <field name="name">Penalty Income</field>
+        <field name="code">PNLT</field>
+        <field name="type">sale</field>
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+
+</odoo>

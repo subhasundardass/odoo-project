@@ -1,0 +1,25 @@
+<odoo>
+    <record id="view_flat_tree" model="ir.ui.view">
+        <field name="name">society.flat.tree</field>
+        <field name="model">society.flat</field>
+        <field name="arch" type="xml">
+            <tree string="Flats">
+                <field name="number" />
+                <field name="block" />
+                <field name="floor" />
+                <field name="type" />
+                <field name="area_sqft" />
+                <field name="status" />
+                <field name="member_id" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action to open Flat list -->
+    <record id="action_society_flat" model="ir.actions.act_window">
+        <field name="name">Flats</field>
+        <field name="res_model">society.flat</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

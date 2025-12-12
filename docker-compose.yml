@@ -1,14 +1,17 @@
-version: "3.1"
 services:
   web:
-    image: odoo:16
+    image: odoo:15
     container_name: web-odoo
     depends_on:
       - db
     volumes:
       - odoo-web-data:/var/lib/odoo
       - ./config:/etc/odoo
-      - ./local-addons:/mnt/extra-addons
+      - ./local-addons:/mnt/extra-addons:cached
+    command: >
+      odoo -c /etc/odoo/odoo.conf
+      --dev=reload,xml,py
+      
     environment:
       - USER=odoo
       - PASSWORD=odoo
@@ -24,8 +27,11 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - odoo-db-data:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"   
     networks:
       - odoo
+      
   pgadmin:
     container_name: pgadmin-odoo
     image: dpage/pgadmin4

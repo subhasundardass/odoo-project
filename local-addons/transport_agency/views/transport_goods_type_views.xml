@@ -1,0 +1,59 @@
+<odoo>
+
+    <!-- ✅ TREE VIEW -->
+    <record id="view_transport_goods_type_tree" model="ir.ui.view">
+        <field name="name">transport.goods.type.tree</field>
+        <field name="model">transport.goods.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="is_hazardous"/>
+                <field name="default_unit_id"/>
+                <field name="default_risk_type"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ✅ FORM VIEW -->
+    <record id="view_transport_goods_type_form" model="ir.ui.view">
+        <field name="name">transport.goods.type.form</field>
+        <field name="model">transport.goods.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+
+                    <group col="2">
+
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="active"/>
+                        </group>
+
+                        <group>
+                            <field name="default_unit_id"/>
+                            <field name="default_risk_type"/>
+                            <field name="is_hazardous"/>
+                        </group>
+
+                    </group>
+
+                    <group>
+                        <field name="note"/>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ✅ ACTION -->
+    <record id="action_transport_goods_type" model="ir.actions.act_window">
+        <field name="name">Goods Types</field>
+        <field name="res_model">transport.goods.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

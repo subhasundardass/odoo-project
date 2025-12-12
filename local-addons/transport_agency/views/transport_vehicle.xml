@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- =============================== -->
+    <!-- TRANSPORT VEHICLE TREE VIEW -->
+    <!-- =============================== -->
+    <record id="view_transport_vehicle_tree" model="ir.ui.view">
+        <field name="name">transport.vehicle.tree</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="license_plate"/>
+                <field name="model_id"/>
+                <field name="driver_id"/>
+                <field name="model_year"/>
+                <field name="ownership_type" string="Ownership"/>
+                <!-- <field name="vendor_id"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <!-- =============================== -->
+    <!-- TRANSPORT VEHICLE FORM VIEW -->
+    <!-- =============================== -->
+    <record id="view_transport_vehicle_form" model="ir.ui.view">
+        <field name="name">transport.vehicle.form</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+
+                    <group>
+                        <field name="name"/>
+                        <field name="license_plate"/>
+                        <field name="model_id"/>
+                    </group>
+
+                    <group>
+                        <field name="driver_id"/>
+                        <field name="model_year"/>
+                    </group>
+
+                    <!-- <group string="Ownership Details">
+                        <field name="ownership_type"/>
+                        <field name="vendor_id" attrs="{'invisible': [('ownership_type', '=', 'own')]}"/>
+                    </group> -->
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- =============================== -->
+    <!-- TRANSPORT VEHICLE ACTION -->
+    <!-- =============================== -->
+    <record id="action_transport_vehicle_list" model="ir.actions.act_window">
+        <field name="name">Transport Vehicles</field>
+        <field name="res_model">fleet.vehicle</field>
+        <field name="view_mode">tree,form</field>
+
+        <!-- LINK CUSTOM TREE VIEW -->
+        <field name="view_id" ref="view_transport_vehicle_tree"/>
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first transport vehicle
+            </p>
+        </field>
+    </record>
+
+</odoo>

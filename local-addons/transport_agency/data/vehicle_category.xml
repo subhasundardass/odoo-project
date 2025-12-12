@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================= -->
+    <!-- VEHICLE CATEGORIES (INDIA) -->
+    <!-- ============================= -->
+
+    <!-- Small / Light vehicles -->
+    <record id="vehicle_category_pickup" model="fleet.vehicle.model.category">
+        <field name="name">Pickup</field>
+    </record>
+
+    <record id="vehicle_category_mini_truck" model="fleet.vehicle.model.category">
+        <field name="name">Mini Truck</field>
+    </record>
+
+    <!-- Normal Trucks -->
+    <record id="vehicle_category_truck" model="fleet.vehicle.model.category">
+        <field name="name">Truck</field>
+    </record>
+
+    <record id="vehicle_category_10w_truck" model="fleet.vehicle.model.category">
+        <field name="name">10 Wheeler</field>
+    </record>
+
+    <record id="vehicle_category_14w_truck" model="fleet.vehicle.model.category">
+        <field name="name">14 Wheeler</field>
+    </record>
+
+    <record id="vehicle_category_18w_truck" model="fleet.vehicle.model.category">
+        <field name="name">18 Wheeler</field>
+    </record>
+
+    <!-- Special purpose trucks -->
+    <record id="vehicle_category_container_truck" model="fleet.vehicle.model.category">
+        <field name="name">Container Truck</field>
+    </record>
+
+    <record id="vehicle_category_tanker_truck" model="fleet.vehicle.model.category">
+        <field name="name">Tanker</field>
+    </record>
+
+    <record id="vehicle_category_tipper_truck" model="fleet.vehicle.model.category">
+        <field name="name">Tipper</field>
+    </record>
+
+    <record id="vehicle_category_reefer_truck" model="fleet.vehicle.model.category">
+        <field name="name">Refrigerated Truck</field>
+    </record>
+
+    <record id="vehicle_category_flatbed_truck" model="fleet.vehicle.model.category">
+        <field name="name">Flatbed / Open Truck</field>
+    </record>
+
+    <!-- Trailers -->
+    <record id="vehicle_category_trailer" model="fleet.vehicle.model.category">
+        <field name="name">Trailer</field>
+    </record>
+
+</odoo>

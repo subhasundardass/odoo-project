@@ -1,0 +1,52 @@
+<odoo>
+    <record id="view_transport_delivery_form" model="ir.ui.view">
+        <field name="name">transport.delivery.form</field>
+        <field name="model">transport.delivery</field>
+        <field name="arch" type="xml">
+            <form string="Delivery">
+                <header>
+                    <button name="action_arrived" type="object" string="Arrived" states="pending"/>
+                    <button name="action_unloading" type="object" string="Start Unloading" states="arrived"/>
+                    <button name="action_delivered" type="object" string="Mark Delivered" states="unloading"/>
+                    <button name="action_issue" type="object" string="Delivery Issue" states="arrived,unloading"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="booking_id"/>
+                        <field name="movement_id"/>
+                        <field name="delivery_date"/>
+                        <field name="delivered_by_id"/>
+                        <field name="destination_hub_id"/>
+                        <field name="delivery_status"/>
+                        <field name="consignee_acknowledged"/>
+                        <field name="delivery_issue_reason"/>
+                        <field name="pod_attachment" filename="pod_filename"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_transport_delivery_tree" model="ir.ui.view">
+        <field name="name">transport.delivery.tree</field>
+        <field name="model">transport.delivery</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="delivery_date"/>
+                <field name="booking_id"/>
+                <field name="movement_id"/>
+                <field name="destination_hub_id"/>
+                <field name="delivery_status"/>
+                <field name="ready_for_billing"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_transport_delivery" model="ir.actions.act_window">
+        <field name="name">Deliveries</field>
+        <field name="res_model">transport.delivery</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

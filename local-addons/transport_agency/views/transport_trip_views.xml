@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_transport_trip_tree" model="ir.ui.view">
+    <field name="name">transport.trip.tree</field>
+    <field name="model">transport.trip</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="name"/>
+        <field name="booking_id"/>
+        <field name="vehicle_id"/>
+        <field name="driver_id"/>
+        <field name="trip_date"/>
+        <field name="total_cost"/>
+        <field name="profit"/>
+        <field name="state"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="view_transport_trip_form" model="ir.ui.view">
+    <field name="name">transport.trip.form</field>
+    <field name="model">transport.trip</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="name" readonly="1"/>
+            <field name="booking_id"/>
+            <field name="vehicle_id"/>
+            <field name="vehicle_owner_id" readonly="1"/>
+            <field name="is_hired" readonly="1"/>
+            <field name="driver_id"/>
+            <field name="trip_date"/>
+            <field name="expected_delivery_date"/>
+            <field name="delivery_date"/>
+          </group>
+
+          <group>
+            <field name="hire_amount"/>
+            <field name="diesel_amount"/>
+            <field name="driver_cost"/>
+            <field name="toll_amount"/>
+            <field name="other_expense"/>
+            <field name="total_cost" readonly="1"/>
+            <field name="freight_amount" readonly="1"/>
+            <field name="profit" readonly="1"/>
+          </group>
+
+          <group>
+            <field name="vendor_bill_id" readonly="1"/>
+            <field name="customer_invoice_id" readonly="1"/>
+          </group>
+        </sheet>
+
+        <footer>
+          <button string="Start Trip" type="object" name="action_start_trip" class="btn-secondary"/>
+          <button string="Close Trip" type="object" name="action_close_trip" class="btn-primary"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_transport_trip" model="ir.actions.act_window">
+    <field name="name">Trips</field>
+    <field name="res_model">transport.trip</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_transport_trips" name="Trips" parent="menu_transport_root" action="action_transport_trip"/>
+</odoo>

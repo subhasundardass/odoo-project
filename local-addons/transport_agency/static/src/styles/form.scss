@@ -1,0 +1,15 @@
+// ✅ Global Input Styling (Odoo 15 Safe)
+.o_input {
+    padding: 4px 8px;
+    border: 1px solid $o-gray-300;
+    background-color: #eaf4ff !important;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    height: auto;
+}
+
+// ✅ Force Select to Look Like Normal Input
+select.o_field_widget.o_input {
+    padding: 4px 8px !important;
+
+}
