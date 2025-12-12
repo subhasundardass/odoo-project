@@ -1,3 +1,10 @@
 {
-    "python.languageServer": "None"
+    "python.languageServer": "None",
+    "python-envs.pythonProjects": [
+        {
+            "path": "transport_agency",
+            "envManager": "ms-python.python:venv",
+            "packageManager": "ms-python.python:pip"
+        }
+    ]
 }
