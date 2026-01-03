@@ -1,0 +1,61 @@
+<odoo>
+
+    <!-- =========================
+         TRANSPORT INVOICE TREE
+    ========================== -->
+    <record id="view_transport_invoice_tree" model="ir.ui.view">
+        <field name="name">transport.invoice.tree</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <tree string="Transport Invoices">
+                <field name="name"/>
+                <field name="invoice_date"/>
+                <field name="partner_id"/>
+                <field name="booking_id"/>
+                <field name="amount_total"/>
+                <!-- Invoice State -->
+                <field name="state" widget="badge" decoration-warning="state == 'draft'" decoration-info="state == 'posted'" decoration-muted="state == 'cancel'"/>
+                <!-- Payment Status -->
+                <field name="payment_state" widget="badge" decoration-danger="payment_state == 'not_paid'" decoration-warning="payment_state == 'partial'" decoration-success="payment_state == 'paid'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- =========================
+         TRANSPORT INVOICE FORM
+    ========================== -->
+    <record id="view_transport_invoice_form" model="ir.ui.view">
+        <field name="name">transport.invoice.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook" position="before">
+                <group>
+                    <field name="booking_id" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- =========================
+         TRANSPORT INVOICE ACTION
+    ========================== -->
+    <record id="action_transport_invoices" model="ir.actions.act_window">
+        <field name="name">Invoices/Bills</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_transport_invoice_tree"/>
+        <field name="domain">
+            [ ('move_type','=','out_invoice'), ('booking_id','!=',False)
+            ]
+        </field>
+        <field name="context">
+            {
+                'default_move_type': 'out_invoice',
+                'create': False
+            }
+        </field>
+    </record>
+
+
+</odoo>

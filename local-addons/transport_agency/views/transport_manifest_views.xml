@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_transport_manifest_tree" model="ir.ui.view">
+        <field name="name">transport.manifest.tree</field>
+        <field name="model">transport.manifest</field>
+        <field name="arch" type="xml">
+            <tree string="Transport Manifests">
+                <field name="name"/>
+                <field name="source_location_id"/>
+                <field name="destination_location_id"/>
+                <field name="vehicle_id"/>
+                <field name="driver_id"/>
+                <field name="departure_time"/>
+                <field name="arrival_time"/>
+                <field name="estimated_cost"/>
+                <!-- <field name="state" widget="badge" decoration-info="state == 'confirmed'" decoration-warning="state == 'draft'" decoration-success="state == 'received'" decoration-muted="state == 'cancelled'"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_transport_manifest_form" model="ir.ui.view">
+        <field name="name">transport.manifest.form</field>
+        <field name="model">transport.manifest</field>
+        <field name="arch" type="xml">
+            <form string="Internal Transfer Manifest">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_transit,received"/>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary" states="draft"/>
+                    <!-- <button name="action_start_trip" string="Start Trip" type="object" class="btn-success" states="confirmed"/>
+                    <button name="action_receive" string="Mark Received" type="object" class="btn-secondary" states="in_transit"/> -->
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h2>
+                            <field name="name" />
+                        </h2>
+                    </div>
+
+                    <!-- Trip Details -->
+                    <group string="Trip Details" col="4">
+                        <field name="source_location_id"/>
+                        <field name="destination_location_id"/>
+                        <field name="vehicle_id"/>
+                        <field name="driver_id"/>
+                    </group>
+
+                    <!-- Timing -->
+                    <group string="Schedule" col="4">
+                        <field name="departure_time"/>
+                        <field name="arrival_time"/>
+                    </group>
+
+                    <notebook>
+
+                        <!-- Goods / Dockets -->
+                        <page string="Goods &amp; Dockets">
+                            <field name="goods_line_ids" readonly="1">
+                                <tree>
+                                    <field name="booking_id"/>
+                                    <field name="goods_type_id"/>
+                                    <field name="qty"/>
+                                    <field name="actual_weight"/>
+                                    <field name="charged_weight"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <!-- Movement Legs -->
+                        <page string="Movement Legs">
+                            <field name="leg_ids" readonly="1">
+                                <tree>
+                                    <field name="sequence"/>
+                                    <field name="from_location_id"/>
+                                    <field name="to_location_id"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+
+
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_transport_manifest" model="ir.actions.act_window">
+        <field name="name">Internal Transfer Manifests</field>
+        <field name="res_model">transport.manifest</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Create your first Internal Transfer Manifest
+            </p>
+            <p>
+            A manifest represents a single vehicle trip consolidating
+            goods from multiple bookings.
+            </p>
+        </field>
+    </record>
+
+</odoo>

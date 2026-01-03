@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ========================================================= -->
+    <!-- TREE VIEW -->
+    <!-- ========================================================= -->
+    <record id="view_transport_b2b_rate_tree" model="ir.ui.view">
+        <field name="name">transport.b2b.rate.tree</field>
+        <field name="model">transport.b2b.rate</field>
+        <field name="arch" type="xml">
+            <tree string="B2B Transport Rates">
+                <field name="name"/>
+                <field name="transporter_id"/>
+
+                <field name="uom_id"/>
+                <field name="rate"/>
+                <field name="valid_from"/>
+                <field name="valid_upto"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- FORM VIEW -->
+    <!-- ========================================================= -->
+    <record id="view_transport_b2b_rate_form" model="ir.ui.view">
+        <field name="name">transport.b2b.rate.form</field>
+        <field name="model">transport.b2b.rate</field>
+        <field name="arch" type="xml">
+            <form string="B2B Transport Rate">
+                <sheet>
+
+                    <header>
+                        <field name="active" widget="boolean_toggle"/>
+                    </header>
+
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="transporter_id"/>
+                        </group>
+
+                        <group>
+
+                        </group>
+                    </group>
+
+                    <group>
+                        <group>
+                            <field name="uom_id"/>
+                            <field name="rate"/>
+                        </group>
+
+                        <group>
+                            <field name="valid_from"/>
+                            <field name="valid_upto"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="remarks"/>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- SEARCH VIEW -->
+    <!-- ========================================================= -->
+    <record id="view_transport_b2b_rate_search" model="ir.ui.view">
+        <field name="name">transport.b2b.rate.search</field>
+        <field name="model">transport.b2b.rate</field>
+        <field name="arch" type="xml">
+            <search string="Search B2B Rates">
+
+                <field name="name"/>
+                <field name="transporter_id"/>
+
+
+                <filter string="Active" name="active" domain="[('active','=',True)]"/>
+
+                <filter string="Expired" name="expired" domain="[('valid_upto','&lt;',context_today())]"/>
+
+                <!-- <group expand="0" string="Group By">
+                    <filter string="Transporter" context="{'group_by':'transporter_id'}"/>
+                </group> -->
+
+            </search>
+        </field>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- ACTION -->
+    <!-- ========================================================= -->
+    <record id="action_transport_b2b_rate" model="ir.actions.act_window">
+        <field name="name">B2B Transport Rates</field>
+        <field name="res_model">transport.b2b.rate</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create B2B transport rates with validity periods.
+            </p>
+        </field>
+    </record>
+
+    <!-- ========================================================= -->
+    <!-- MENUS -->
+    <!-- ========================================================= -->
+
+    <!-- Root Transport Menu (create only if not already present) -->
+    <menuitem id="menu_transport_root" name="Transport" sequence="10"/>
+
+    <!-- B2B Rate Menu -->
+    <menuitem id="menu_transport_b2b_rate" name="B2B Rates" parent="menu_transport_root" action="action_transport_b2b_rate" sequence="30"/>
+
+</odoo>

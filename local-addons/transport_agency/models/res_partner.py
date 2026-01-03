@@ -5,16 +5,20 @@ from odoo.exceptions import ValidationError
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    partner_type = fields.Selection(
-        [("customer", "Customer"), ("vendor", "Vendor"), ("driver", "Driver")],
-        string="Partner Type",
-    )
+    # partner_type = fields.Selection(
+    #     [
+    #         ("customer", "Customer"),
+    #         ("vendor", "Vendor"),
+    #         ("driver", "Driver"),
+    #     ],
+    #     string="Partner Type",
+    # )
 
     # =========================
     # TRANSPORT ROLE FLAGS
     # =========================
     is_driver = fields.Boolean(string="Is Driver", tracking=True)
-    is_transporter = fields.Boolean(string="Is Transport Vendor", tracking=True)
+    is_transporter = fields.Boolean(string="Is Transporter", tracking=True)
     is_consignee = fields.Boolean(string="Is Consignee")
     is_consignor = fields.Boolean(string="Is Consignor")
 

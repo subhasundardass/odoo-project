@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from collections import deque
 import logging
 
@@ -19,6 +19,30 @@ class TransportMovement(models.Model):
         default=lambda self: self.env["ir.sequence"].next_by_code("transport.movement"),
     )
 
+    movement_type = fields.Selection(
+        [
+            ("outbound", "Outbound"),
+            ("inbound", "Inbound (Third Party)"),
+            ("internal", "Internal Transfer"),
+        ],
+        default="outbound",
+        required=True,
+    )
+
+    booking_id = fields.Many2one(
+        "transport.booking",
+        string="Booking No",
+        required=True,
+        ondelete="restrict",
+        index=True,
+    )
+    docket_no = fields.Char(
+        string="Docket No",
+        related="booking_id.docket_no",
+        store=True,
+        readonly=True,
+    )
+
     customer_id = fields.Many2one(
         "res.partner",
         string="Customer",
@@ -26,18 +50,22 @@ class TransportMovement(models.Model):
         help="Customer associated with this movement",
     )
 
+    booking_date = fields.Datetime(
+        related="booking_id.create_date",
+        string="Booking Date",
+        readonly=True,
+    )
+
     pickup_location_id = fields.Many2one(
         "transport.location",
         string="Pickup Location",
         required=True,
-        domain="[('owner_type','=','customer'), ('location_type','=','spoke')]",
     )
 
     delivery_location_id = fields.Many2one(
         "transport.location",
         string="Delivery Location",
         required=True,
-        domain="[('owner_type','=','customer'), ('location_type','=','spoke')]",
     )
 
     movement_date = fields.Datetime(
@@ -46,9 +74,17 @@ class TransportMovement(models.Model):
         required=True,
     )
 
+    route_plan_id = fields.Many2one(
+        "transport.route.plan",
+        string="Route Plan",
+        required=True,
+        ondelete="restrict",
+    )
+
     state = fields.Selection(
         [
             ("draft", "Draft"),
+            ("confirmed", "Confirmed"),
             ("planned", "Planned"),
             ("in_transit", "In Transit"),
             ("completed", "Completed"),
@@ -56,6 +92,7 @@ class TransportMovement(models.Model):
         ],
         string="Status",
         default="draft",
+        tracking=True,
     )
 
     leg_ids = fields.One2many(
@@ -63,6 +100,7 @@ class TransportMovement(models.Model):
         "movement_id",
         string="Movement Legs",
         copy=True,
+        default=lambda self: self.env["transport.movement.leg"],  # // Always return
     )
 
     total_cost = fields.Float(
@@ -147,11 +185,34 @@ class TransportMovement(models.Model):
             if rec.pickup_location_id == rec.delivery_location_id:
                 raise ValidationError("Pickup and Delivery cannot be the same.")
 
+    # # --------------------PLANNED-----------------------------------------
+    # # Planning / Assignment Info
+    # vehicle_id = fields.Many2one(
+    #     "fleet.vehicle", string="Vehicle", help="Vehicle assigned for this movement"
+    # )
+    # driver_id = fields.Many2one(
+    #     "res.partner",
+    #     string="Driver",
+    #     domain=[("is_driver", "=", True)],
+    #     help="Driver responsible for this movement",
+    # )
+
+    # planned_by = fields.Many2one(
+    #     "res.users",
+    #     string="Planned By",
+    #     readonly=True,
+    # )
+
+    # planned_date = fields.Datetime(
+    #     string="Planned Date",
+    #     readonly=True,
+    # )
+
     # ----------------------------------------
     # STATE ACTIONS
     # ----------------------------------------
-    def action_start(self):
-        self.state = "in_transit"
+    def action_confirm(self):
+        self.state = "confirmed"
 
     def action_complete(self):
         for rec in self:
@@ -164,163 +225,138 @@ class TransportMovement(models.Model):
         self.state = "completed"
 
     def action_cancel(self):
-        self.state = "cancelled"
+        for move in self:
+            move.state = "cancelled"
 
-    # -------------------------------------------------------------
-    # BUTTON TO GENERATE LEGS
-    # -------------------------------------------------------------
-    def action_generate_legs(self):
-        for movement in self:
-            movement._create_movement_legs_without_bfs()
-
-    # -------------------------------------------------------------
-    # AUTO GENERATE WITHOUT BFS
-    # -------------------------------------------------------------
-    def _create_movement_legs_without_bfs(self):
-        self.ensure_one()
-        self.leg_ids.unlink()
-
-        legs = []
-        seq = 1
-
-        pickup = self.pickup_location_id
-        delivery = self.delivery_location_id
-
-        # 1. Pickup → Pickup parent hub (if any)
-        if pickup.location_type == "spoke" and pickup.parent_hub_id:
-            legs.append((pickup.id, pickup.parent_hub_id.id))
-            current = pickup.parent_hub_id
-        else:
-            current = pickup
-
-        # 2. Hub → Hub (if delivery has parent hub different from pickup hub)
-        if delivery.location_type == "spoke" and delivery.parent_hub_id:
-            if current != delivery.parent_hub_id:
-                legs.append((current.id, delivery.parent_hub_id.id))
-            current = delivery.parent_hub_id
-
-        # 3. Hub → Delivery (if delivery is a spoke)
-        if delivery.location_type == "spoke":
-            legs.append((current.id, delivery.id))
-
-        # 4. Create leg records
-        for src, dst in legs:
-            self.env["transport.movement.leg"].create(
-                {
-                    "movement_id": self.id,
-                    "sequence": seq,
-                    "from_location_id": src,
-                    "to_location_id": dst,
-                    "responsible_by": "own",
-                }
-            )
-            seq += 1
-
-    # -------------------------------------------------------------
-    # BFS PATH FINDING + LEG CREATION
-    # -------------------------------------------------------------
-
-    def _create_movement_legs(self):
-        """Finds multi-leg path using BFS and creates legs."""
-        self.ensure_one()
-
-        # Clear previous legs
-        self.leg_ids.unlink()
-
-        graph = self._build_graph()
-
-        path = self._bfs_find_path(
-            graph,
-            start=self.pickup_location_id.id,
-            end=self.delivery_location_id.id,
-        )
-
-        if not path:
-            raise ValidationError(
-                "No route found between Pickup and Delivery locations."
-            )
-
-        # ---------------------------------------------------------
-        # CREATE LEGS NOW
-        # ---------------------------------------------------------
-        for i in range(len(path) - 1):
-            source_id = path[i]
-            dest_id = path[i + 1]
-
-            route = self.env["transport.route"].search(
+            reversals = self.env["transport.hub.inventory"].search(
                 [
-                    ("source_location_id", "=", source_id),
-                    ("destination_location_id", "=", dest_id),
-                ],
-                limit=1,
+                    ("movement_leg_id", "in", move.leg_ids.ids),
+                    ("state", "=", "valid"),
+                ]
             )
+            reversals.write({"state": "cancelled"})
 
-            if not route:
+    # -------------------------------------
+    # Generate Legs from Movement Plan
+    # -------------------------------------
+    def action_generate_legs_from_plan(self):
+        for movement in self:
+
+            # --------------------------------------------------
+            # BASIC VALIDATIONS
+            # --------------------------------------------------
+            if movement.state != "confirmed":
+                raise ValidationError("Confirm movement before generating legs.")
+
+            if movement.leg_ids:
+                raise ValidationError("Movement legs already generated.")
+
+            plan = movement.route_plan_id
+            if not plan or not plan.line_ids:
+                raise ValidationError("Valid Route Plan required.")
+
+            pickup_location = movement.pickup_location_id
+            delivery_location = movement.delivery_location_id
+
+            if not pickup_location or not delivery_location:
+                raise ValidationError("Pickup and Delivery locations are required.")
+
+            plan_lines = plan.line_ids.sorted("sequence")
+            first_hub = plan_lines[0].origin_location_id
+            last_hub = plan_lines[-1].destination_location_id
+
+            legs = []
+            seq = 1
+
+            # --------------------------------------------------
+            # 1️⃣ RESOLVE ACTUAL PICKUP LOCATION
+            # --------------------------------------------------
+            # Rules:
+            # - Customer pickup → customer location
+            # - Own pickup → own location
+            # - Third-party pickup → same pickup point (NO remap)
+            actual_pickup = pickup_location
+
+            # ❗ Prevent invalid Customer → Customer
+            if (
+                actual_pickup.owner_type == "customer"
+                and first_hub.owner_type == "customer"
+            ):
                 raise ValidationError(
-                    "Route missing between %s → %s" % (path[i], path[i + 1])
+                    "Customer pickup must move to a hub, not another customer."
                 )
 
-            # Create leg
-            leg = self.env["transport.movement.leg"].create(
+            # --------------------------------------------------
+            # 2️⃣ PICKUP → FIRST HUB
+            # --------------------------------------------------
+            if actual_pickup != first_hub:
+                legs.append(
+                    (
+                        0,
+                        0,
+                        {
+                            "sequence": seq,
+                            "from_location_id": actual_pickup.id,
+                            "to_location_id": first_hub.id,
+                        },
+                    )
+                )
+                seq += 1
+
+            # --------------------------------------------------
+            # 3️⃣ HUB → HUB (LINEHAUL)
+            # --------------------------------------------------
+            for line in plan_lines:
+                if line.origin_location_id == line.destination_location_id:
+                    continue
+
+                legs.append(
+                    (
+                        0,
+                        0,
+                        {
+                            "sequence": seq,
+                            "from_location_id": line.origin_location_id.id,
+                            "to_location_id": line.destination_location_id.id,
+                        },
+                    )
+                )
+                seq += 1
+
+            # --------------------------------------------------
+            # 4️⃣ LAST HUB → DELIVERY
+            # --------------------------------------------------
+            if last_hub != delivery_location:
+                # ❗ Prevent invalid Customer → Customer
+                if (
+                    last_hub.owner_type == "customer"
+                    and delivery_location.owner_type == "customer"
+                ):
+                    raise ValidationError(
+                        "Customer to Customer direct delivery is not allowed."
+                    )
+
+                legs.append(
+                    (
+                        0,
+                        0,
+                        {
+                            "sequence": seq,
+                            "from_location_id": last_hub.id,
+                            "to_location_id": delivery_location.id,
+                        },
+                    )
+                )
+
+            # --------------------------------------------------
+            # 5️⃣ WRITE RESULT
+            # --------------------------------------------------
+            movement.write(
                 {
-                    "movement_id": self.id,
-                    "sequence": i + 1,
-                    "from_location_id": source_id,
-                    "to_location_id": dest_id,
-                    "responsible_by": route.responsible_by,
+                    "leg_ids": legs,
+                    "state": "planned",
                 }
             )
 
-            # STOP if third-party hub takes over
-            if route.responsible_by == "third_party":
-                break
-
-    # -------------------------------------------------------------
-    # BUILD GRAPH FROM ROUTES
-    # -------------------------------------------------------------
-    def _build_graph(self):
-        """Returns adjacency list graph from transport.route records."""
-        graph = {}
-
-        for route in self.env["transport.route"].search([]):
-            graph.setdefault(route.source_location_id.id, [])
-            graph[route.source_location_id.id].append(route.destination_location_id.id)
-
-        return graph
-
-    # -------------------------------------------------------------
-    # BFS PATH FINDER (Fast + Scalable)
-    # -------------------------------------------------------------
-    def _bfs_find_path(self, graph, start, end):
-        """Returns shortest path list [A, B, C, D] using BFS."""
-
-        _logger.info(
-            "ROUTES========================================= = %s",
-            self.env["transport.route"].search([]),
-        )
-        _logger.info(
-            "======================================================GRAPH: %s", graph
-        )
-        _logger.info("Start: %s, End: %s", start, end)
-
-        queue = deque([[start]])
-        visited = set()
-
-        while queue:
-            path = queue.popleft()
-            current = path[-1]
-
-            # STOP if reached destination
-            if current == end:
-                return path
-
-            if current in visited:
-                continue
-
-            visited.add(current)
-
-            for neighbour in graph.get(current, []):
-                new_path = path + [neighbour]
-                queue.append(new_path)
-
-        return None
+            if movement.booking_id:
+                movement.booking_id.write({"state": "planned"})

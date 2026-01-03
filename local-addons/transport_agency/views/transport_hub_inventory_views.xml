@@ -1,0 +1,145 @@
+<odoo>
+
+    <!-- ========================= -->
+    <!-- Tree View (Ledger)        -->
+    <!-- ========================= -->
+    <record id="view_transport_hub_inventory_tree" model="ir.ui.view">
+        <field name="name">transport.hub.inventory.tree</field>
+        <field name="model">transport.hub.inventory</field>
+        <field name="arch" type="xml">
+            <tree string="Hub Inventory Ledger">
+                <field name="name" string="ID#"/>
+                <field name="hub_id"/>
+                <field name="booking_id"/>
+                <field name="movement_type"/>
+                <field name="goods_type_id"/>
+                <field name="qty"/>
+                <field name="weight"/>
+                <field name="unit_id"/>
+                <field name="source_location_id"/>
+                <field name="destination_location_id"/>
+                <field name="remarks"/>
+                <field name="date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Form View (Read-only)     -->
+    <!-- ========================= -->
+    <record id="view_transport_hub_inventory_form" model="ir.ui.view">
+        <field name="name">transport.hub.inventory.form</field>
+        <field name="model">transport.hub.inventory</field>
+        <field name="arch" type="xml">
+            <form string="Hub Inventory Entry">
+                <sheet attrs="{'readonly': [('id', '!=', False)]}">
+
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="date"/>
+                            <field name="hub_id"/>
+                            <field name="movement_type"/>
+                        </group>
+
+                        <group>
+                            <field name="booking_id"/>
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+
+                    <separator string="Goods Details"/>
+
+                    <group>
+                        <group>
+                            <field name="goods_type_id"/>
+                            <field name="goods_description"/>
+                        </group>
+                        <group>
+                            <field name="qty"/>
+                            <field name="unit_id"/>
+                            <field name="weight"/>
+                        </group>
+                    </group>
+
+                    <separator string="Movement"/>
+
+                    <group>
+                        <group>
+                            <field name="source_location_id"/>
+                        </group>
+                        <group>
+                            <field name="destination_location_id"/>
+                        </group>
+                    </group>
+
+                    <separator string="Remarks"/>
+
+                    <group>
+                        <field name="remarks" nolabel="1"/>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ========================= -->
+    <!-- Search View               -->
+    <!-- ========================= -->
+    <!-- <record id="view_transport_hub_inventory_search" model="ir.ui.view">
+        <field name="name">transport.hub.inventory.search</field>
+        <field name="model">transport.hub.inventory</field>
+        <field name="arch" type="xml">
+            <search string="Hub Inventory">
+                <field name="name"/>
+                <field name="booking_id"/>
+                <field name="hub_id"/>
+                <field name="goods_type_id"/>
+
+                <filter name="filter_in" string="Inward" domain="[('movement_type','=','in')]"/>
+                <filter name="filter_out" string="Outward" domain="[('movement_type','=','out')]"/>
+
+                <separator/>
+
+                <filter name="filter_valid" string="Valid" domain="[('state','=','valid')]"/>
+                <filter name="filter_cancelled" string="Cancelled" domain="[('state','=','cancelled')]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Hub" context="{'group_by':'hub_id'}"/>
+                    <filter string="Goods Type" context="{'group_by':'goods_type_id'}"/>
+                    <filter string="Movement Type" context="{'group_by':'movement_type'}"/>
+                    <filter string="Date (Day)" context="{'group_by':'date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record> -->
+
+
+
+    <!-- ========================= -->
+    <!-- Action                    -->
+    <!-- ========================= -->
+    <record id="action_transport_hub_inventory" model="ir.actions.act_window">
+        <field name="name">Hub Inventory Ledger</field>
+        <field name="res_model">transport.hub.inventory</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_transport_hub_inventory_tree"/>
+        <!-- <field name="search_view_id" ref="view_transport_hub_inventory_search"/> -->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hub inventory movements found.
+            </p>
+            <p>
+                This ledger records all inward and outward goods movements at hubs.
+            </p>
+        </field>
+    </record>
+
+
+</odoo>

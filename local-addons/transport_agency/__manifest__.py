@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Transport Agency",
+    "version": "15.01",
     "summary": "Transport Agency Management",
     "description": """
         Long description of module's purpose
@@ -16,42 +17,52 @@
     "depends": [
         "base",
         "web",
-        "base_address_extended",
+        "l10n_in",
         "mail",
         "contacts",
         "account",
         "fleet",
         "hr",
-        "hr_expense",
+        # "hr_expense",
     ],
     # always loaded
     "data": [
         "security/ir.model.access.csv",
         # views
         "views/dummy.xml",
-        "views/transport_booking.xml",
+        # Master ---------------------------------------------
+        "views/transport_b2b_rate_views.xml",
         # "views/transport_vehicle.xml",
-        # "views/transport_goods_type_views.xml",
-        # ---------------------------------------------
+        "views/transport_goods_type_views.xml",
+        "views/transport_route_plan_views.xml",
+        # # ---------------------------------------------
         "views/transport_city_views.xml",
         "views/transport_location_views.xml",
         "views/transport_movement_views.xml",
-        "views/transport_route_views.xml",
-        "views/transport_delivery_views.xml",
-        # ---------------------------------------------
-        # Report (TEMPLATE FIRST, THEN REPORT)
+        "views/transport_movement_leg_views.xml",
+        "views/transport_manifest_views.xml",
+        "views/transport_assign_manifest_wizard_view.xml",
+        "views/transport_delivery_wizard_view.xml",
+        "views/transport_hub_inventory_views.xml",
+        "views/transport_invoice_views.xml",
+        # # ---FSCM--------------------------------
+        # "views/transport_forwarding_manifold_views.xml",
+        # # ---------------------------------------------
+        # # Report (TEMPLATE FIRST, THEN REPORT)
         "reports/external_layout_custom.xml",
         "reports/transport_booking_bill.xml",
-        # menu
+        # # ---Booking--------------------------------
+        "views/transport_booking.xml",
+        "views/transport_inbound_manifest.xml",
+        ## menu
         "views/navigation.xml",
-        # data
+        ## data
         "data/vehicle_manufacturer.xml",
         "data/vehicle_model.xml",
         "data/vehicle_category.xml",
         "data/transport_goods_type_data.xml",
-        # sequences
+        ## sequences
         "data/sequences.xml",
-        # "data/movement_sequences.xml",
     ],
     # only loaded in demonstration mode
     "demo": [

@@ -5,8 +5,19 @@ access_transport_goods_line,Transport Goods Line,model_transport_goods_line,base
 access_transport_good_type,Transport Good Type,model_transport_goods_type,base.group_user,1,1,1,1
 access_transport_location,Transport Location,model_transport_location,base.group_user,1,1,1,1
 access_transport_movement,Transport Movement,model_transport_movement,base.group_user,1,1,1,1
-access_transport_route,Transport Route,model_transport_route,base.group_user,1,1,1,1
 access_transport_movement_leg,Transport Movement Leg,model_transport_movement_leg,base.group_user,1,1,1,1
-access_transport_route_template,Transport Route Template,model_transport_route_template,base.group_user,1,1,1,1
 access_transport_city,Transport City,model_transport_city,base.group_user,1,1,1,1
-access_transport_delivery,Transport Delivery,model_transport_delivery,base.group_user,1,1,1,1
+access_transport_forwarding_manifold,Transport Manifold,model_transport_forwarding_manifold,base.group_user,1,1,1,1
+access_transport_forwarding_manifold_line,Transport Manifold Line,model_transport_forwarding_manifold_line,base.group_user,1,1,1,1
+access_transport_b2b_rate,Transport B2B Rate,model_transport_b2b_rate,base.group_user,1,1,1,1
+access_transport_inbound_manifest,Transport Inbound Manifest,model_transport_inbound_manifest,base.group_user,1,1,1,1
+access_transport_inbound_manifest_line,Transport Inbound Manifest Line,model_transport_inbound_manifest_line,base.group_user,1,1,1,1
+access_transport_hub_inventory,Transport Hub Inventory,model_transport_hub_inventory,base.group_user,1,1,1,1
+access_transport_delivery_widget,Transport Delivery Widget,model_transport_delivery_wizard,base.group_user,1,1,1,1
+access_transport_account_move,Transport Account Move,model_account_move,base.group_user,1,1,1,1
+access_transport_route_plan,Transport Movement Plan,model_transport_route_plan,base.group_user,1,1,1,1
+access_transport_route_plan_line,Transport Movement Plan Line,model_transport_route_plan_line,base.group_user,1,1,1,1
+access_transport_manifest,Transport Manifest,model_transport_manifest,base.group_user,1,1,1,1
+access_transport_assign_manifest_wizard,Transport Manifest Assign Widget,model_transport_assign_manifest_wizard,base.group_user,1,1,1,1
+access_transport_assign_manifest_line_wizard,Transport Manifest Assign Line Widget,model_transport_assign_manifest_line_wizard,base.group_user,1,1,1,1
+access_transport_assign_manifest_good_line,Transport Manifest Good Line,model_transport_manifest_good_line,base.group_user,1,1,1,1

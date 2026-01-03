@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_transport_assign_manifest_wizard_form" model="ir.ui.view">
+        <field name="name">transport.assign.manifest.wizard.form</field>
+        <field name="model">transport.assign.manifest.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Assign Goods to Manifest">
+                <sheet>
+
+                    <!-- Context -->
+                    <group>
+                        <field name="leg_id"/>
+                        <field name="manifest_id" placeholder="Leave empty to create new manifest"/>
+                    </group>
+
+                    <separator string="Trip Details"/>
+
+                    <!-- Execution data -->
+                    <group col="2">
+                        <group>
+                            <field name="from_location_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="to_location_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="vehicle_id"/>
+                            <field name="driver_id"/>
+                        </group>
+
+
+                        <group>
+                            <field name="departure_datetime"/>
+                            <field name="expected_arrival_datetime"/>
+                            <field name="estimated_cost"/>
+                        </group>
+                        <field name="good_line_ids">
+                            <tree editable="bottom" create="false" delete="false">
+                                <field name="booking_id" readonly="1"/>
+                                <field name="docket_no" readonly="1"/>
+                                <field name="goods_type_id" readonly="1"/>
+                                <field name="weight" readonly="1"/>
+                                <field name="unit_id" readonly="1"/>
+                                <field name="available_qty" readonly="1"/>
+                                <field name="load_qty"/>
+                            </tree>
+                        </field>
+
+
+
+                    </group>
+
+                </sheet>
+
+                <footer>
+                    <button string="Assign" type="object" name="action_confirm" class="btn-primary"/>
+
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

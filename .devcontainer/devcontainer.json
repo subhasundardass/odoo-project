@@ -38,7 +38,7 @@
         "editor.formatOnSave": true
       },
     }
-  }
+  },
 
-  
+  "postCreateCommand": "apt-get update && apt-get install -y git"
 }

@@ -1,10 +1,11 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 
 class TransportMovementLeg(models.Model):
     _name = "transport.movement.leg"
     _description = "Transport Movement Leg"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "sequence asc"
 
     movement_id = fields.Many2one(
@@ -12,6 +13,11 @@ class TransportMovementLeg(models.Model):
         string="Movement",
         required=True,
         ondelete="cascade",
+    )
+    manifest_id = fields.Many2one(
+        "transport.manifest",
+        string="Manifest",
+        readonly=True,
     )
 
     sequence = fields.Integer(
@@ -75,38 +81,20 @@ class TransportMovementLeg(models.Model):
 
     cost = fields.Float(string="Cost")
 
-    state = fields.Selection(
-        [
-            ("pending", "Pending"),
-            ("in_transit", "In Transit"),
-            ("completed", "Completed"),
-        ],
-        default="pending",
-        string="Status",
+    completed_on = fields.Datetime(
+        string="Completed On",
+        readonly=True,
     )
 
-    # -------------------------------------
-    # AUTO DETECT LEG TYPE
-    # -------------------------------------
-    @api.depends("from_location_id", "to_location_id")
-    def _compute_leg_type(self):
-        for rec in self:
-            if not rec.from_location_id or not rec.to_location_id:
-                rec.leg_type = False
-                continue
-
-            f, t = rec.from_location_id, rec.to_location_id
-
-            if f.location_type == "spoke" and t.location_type == "hub":
-                rec.leg_type = "pickup"
-            elif f.location_type == "hub" and t.location_type == "hub":
-                rec.leg_type = "hub_to_hub"
-            elif f.location_type == "hub" and t.location_type == "spoke":
-                rec.leg_type = "hub_to_spoke"
-            elif f.location_type == "spoke" and t.location_type == "spoke":
-                rec.leg_type = "spoke_delivery"
-            else:
-                rec.leg_type = False
+    state = fields.Selection(
+        [
+            ("draft", "Draft"),
+            ("planned", "Planned"),
+            ("assigned", "Assigned to Manifest"),
+            ("completed", "Completed"),
+        ],
+        default="planned",
+    )
 
     # -------------------------------------
     # BUSINESS RULES
@@ -123,14 +111,11 @@ class TransportMovementLeg(models.Model):
             if rec.from_location_id == rec.to_location_id:
                 raise ValidationError("From and To Locations cannot be the same.")
 
-            # Prevent invalid combinations
             if (
                 rec.from_location_id.owner_type == "customer"
                 and rec.to_location_id.owner_type == "customer"
             ):
-                raise ValidationError(
-                    "Customer to Customer movement is not valid directly."
-                )
+                raise ValidationError("Customer to Customer movement is not allowed.")
 
     # -------------------------------------
     # AUTO-NAME EACH LEG
@@ -141,6 +126,41 @@ class TransportMovementLeg(models.Model):
         store=True,
     )
 
+    @api.onchange("transporter_id")
+    def _onchange_transporter(self):
+        # If transporter has assigned vehicle or driver, you can auto-populate
+        if self.transporter_id:
+            vehicle = self.env["fleet.vehicle"].search(
+                [
+                    ("transporter_id", "=", self.transporter_id.id),
+                    ("state", "=", "available"),
+                ],
+                limit=1,
+            )
+            driver = self.env["res.partner"].search(
+                [
+                    ("transporter_id", "=", self.transporter_id.id),
+                    ("is_driver", "=", True),
+                ],
+                limit=1,
+            )
+            if vehicle:
+                self.vehicle_id = vehicle.id
+            if driver:
+                self.driver_id = driver.id
+
+    @api.constrains("state")
+    def _check_assignment(self):
+        for leg in self:
+            if (
+                leg.state in ("active", "in_transit")
+                and leg.carrier_type == "third_party"
+            ):
+                if not leg.transporter_id:
+                    raise ValidationError(
+                        "Transporter must be assigned before activating the leg."
+                    )
+
     @api.depends("sequence", "from_location_id", "to_location_id")
     def _compute_leg_name(self):
         for rec in self:
@@ -148,3 +168,52 @@ class TransportMovementLeg(models.Model):
                 rec.name = f"Leg {rec.sequence}: {rec.from_location_id.name} → {rec.to_location_id.name}"
             else:
                 rec.name = f"Leg {rec.sequence}"
+
+    # -------------------------------------
+    # ACTION - ASIGN TO MANIFEST
+    # -------------------------------------
+    def action_assign_to_manifest(self):
+        self.ensure_one()
+
+        if self.state != "planned":
+            raise ValidationError("Only planned legs can be assigned to a manifest.")
+
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Assign to Manifest",
+            "res_model": "transport.assign.manifest.wizard",
+            "view_mode": "form",
+            "target": "new",
+            "context": {
+                "default_leg_id": self.id,
+                "default_from_location_id": self.from_location_id.id,
+                "default_to_location_id": self.to_location_id.id,
+            },
+        }
+
+    def action_view_manifest(self):
+        self.ensure_one()
+
+        if not self.manifest_id:
+            raise ValidationError(_("This leg is not assigned to any manifest."))
+
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Manifest"),
+            "res_model": "transport.manifest",
+            "view_mode": "form",
+            "res_id": self.manifest_id.id,
+            "target": "current",
+        }
+
+    def action_unassign_manifest(self):
+        self.ensure_one()
+
+        # if not self.manifest_id:
+        #     return
+
+        if self.manifest_id.state not in ("draft", "confirmed"):
+            raise ValidationError("Cannot unassign leg after manifest dispatch.")
+
+        self.manifest_id = False
+        self.state = "planned"

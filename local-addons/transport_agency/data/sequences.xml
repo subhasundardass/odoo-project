@@ -22,5 +22,45 @@
             <field name="company_id" eval="False"/>
         </record>
 
+        <!-- Transport Manifest (TMF) -->
+        <record id="seq_transport_manifest" model="ir.sequence">
+            <field name="name">Transport Manifest</field>
+            <field name="code">transport.manifest</field>
+            <field name="prefix">ITM/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!-- Forwareding Schedule cum Manifold (FSCM) -->
+        <record id="seq_forwarding_manifold" model="ir.sequence">
+            <field name="name">Forwarding Schedule cum Manifold</field>
+            <field name="code">transport.forwarding.manifold</field>
+            <field name="prefix">FSCM/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!-- Inbound Manifest -->
+        <record id="seq_inbound_manifest" model="ir.sequence">
+            <field name="name">Inbound Manifest</field>
+            <field name="code">transport.inbound.manifest</field>
+            <field name="prefix">INM/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!-- B2B Rate -->
+        <record id="seq_b2b_rate" model="ir.sequence">
+            <field name="name">B2B Transport Rate</field>
+            <field name="code">transport.b2b.rate</field>
+            <field name="prefix">B2B/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!-- Hub Inventory -->
+        <record id="seq_hub_inventory" model="ir.sequence">
+            <field name="name">Hub Movement</field>
+            <field name="code">transport.hub.inventory</field>
+            <field name="prefix">HINV/%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
     </data>
 </odoo>

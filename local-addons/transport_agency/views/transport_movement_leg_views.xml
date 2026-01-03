@@ -1,0 +1,17 @@
+<odoo>
+
+    <!-- LEG TREE -->
+    <record id="view_transport_movement_leg_tree" model="ir.ui.view">
+        <field name="name">transport.movement.leg.tree</field>
+        <field name="model">transport.movement.leg</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence"/>
+                <field name="from_location_id"/>
+                <field name="to_location_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

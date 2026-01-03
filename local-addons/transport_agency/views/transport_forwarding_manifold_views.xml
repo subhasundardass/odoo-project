@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_forwarding_manifold_tree" model="ir.ui.view">
+        <field name="name">transport.forwarding.manifold.tree</field>
+        <field name="model">transport.forwarding.manifold</field>
+        <field name="arch" type="xml">
+            <tree string="Forwarding Schedule cum Manifold">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="from_transporter_id"/>
+                <!-- <field name="total_qty"/>
+                <field name="total_weight"/> -->
+                <field name="transport_mode"/>
+                <field name="total_amount"/>
+                <field name="state"/>
+                <field name="hub_id"/>
+                <field name="create_uid"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_forwarding_manifold_form" model="ir.ui.view">
+        <field name="name">transport.forwarding.manifold.form</field>
+        <field name="model">transport.forwarding.manifold</field>
+        <field name="arch" type="xml">
+            <form string="Forwarding Schedule cum Manifold">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,booked"/>
+                    <button name="action_return_to_draft" type="object" string="Return to Draft" class="btn-warning" states="confirmed"/>
+                    <button name="action_mark_confirm" string="Confirm" type="object" states="draft" class="btn-primary"/>
+                    <button name="action_create_booking" string="Create Booking" type="object" states="confirmed" class="btn-success"/>
+                    <!-- <button name="action_mark_received" string="Mark Received" type="object" states="confirmed" class="btn-primary"/> -->
+                    <!-- <button name="action_complete" string="Complete" type="object" states="in_delivery" class="btn-secondary"/> -->
+                    <!-- <button name="action_cancel" string="Cancel" type="object" states="draft,received" class="btn-danger"/> -->
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h2>
+                            Manifold (FSCM)
+                        </h2>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="from_transporter_id"/>
+                            <field name="date"/>
+                            <field name="manifold_no"/>
+                        </group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="transport_mode"/>
+                            <field name="hub_id"/>
+                        </group>
+                    </group>
+
+
+                    <notebook>
+                        <!-- Manifold Lines -->
+                        <page string="Manifold Lines">
+
+                            <field name="line_ids" attrs="{'readonly': ['|', ('from_transporter_id','=',False), ('hub_id','=',False)
+                            ]}">
+                                <tree editable="bottom">
+                                    <field name="transporter_id" invisible="1"/>
+                                    <field name="hub_location_id" invisible="1"/>
+                                    <field name="goods_type_id"/>
+                                    <field name="goods_invoice_number"/>
+                                    <field name="goods_description"/>
+                                    <field name="qty"/>
+                                    <field name="weight"/>
+                                    <field name="unit_id"/>
+                                    <field name="goods_value"/>
+                                    <field name="delivery_location_id" context="{
+                                        'default_owner_type': 'customer',
+                                        'default_location_type': 'spoke',
+                                        'default_partner_id': transporter_id,
+                                        'default_parent_hub_id': hub_location_id,
+                                    }" string="Deliver to"/>
+                                    <field name="amount" string="Amount"/>
+                                    <!-- Freight amount -->
+
+
+
+                                </tree>
+                            </field>
+                        </page>
+
+                        <!-- Remarks -->
+                        <page string="Remarks">
+                            <field name="remarks"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Action -->
+    <record id="action_forwarding_manifold" model="ir.actions.act_window">
+        <field name="name">Forwarding Schedule cum Manifold</field>
+        <field name="res_model">transport.forwarding.manifold</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

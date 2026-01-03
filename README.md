@@ -73,15 +73,41 @@ password: odoo \
 sudo chmod -R 777 local-addons
 
 ## Scafold addon
-
-docker exec -it web-odoo bash
 odoo scaffold housing_society /mnt/extra-addons
 
-## update - stop-after-init
+## odoo bash
+docker exec -it -u 0 web-odoo /bin/bash
 
+## odoo log
+docker logs -f web-odoo
+
+## Open Odoo shell While Server is Running
+odoo shell -d odoo --no-http
+
+## update - stop-after-init
 odoo-bin -d odoo -u housing_society --stop-after-init
 docker restart web-odoo
 
 ## pg database
-
 docker exec -it db-odoo psql -U odoo -d odoo
+
+## Create new DB and set owner
+CREATE DATABASE tms_dev_v2;
+ALTER DATABASE tms_dev_v2 OWNER TO odoo;
+
+## Setup Odoo with new DB (Docker)
+docker compose run --rm <service_name> \
+  odoo \
+  -d <new_db_name> \
+  -i base \
+  --without-demo=all \
+  --stop-after-init
+
+## Create user
+admin_user = env['res.users'].create({
+    'login': 'admin',
+    'password': 'admin',  
+    'active': True,
+    'partner_id': 3,
+    'groups_id': [(6, 0, [env.ref('base.group_system').id])]  # full access
+})

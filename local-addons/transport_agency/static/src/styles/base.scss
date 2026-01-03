@@ -37,3 +37,9 @@
 .o_list_view table tbody tr:hover {
     background-color: #e6f2ff !important;
 }
+
+/* table cell padding */
+.table-sm th,
+.table-sm td {
+    padding: 0.4rem;
+}

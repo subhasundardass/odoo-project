@@ -10,9 +10,20 @@
     <!-- OPERATIONS MENU -->
     <!-- ===================== -->
     <menuitem id="menu_transport_operations" name="Operations" parent="menu_transport_root" sequence="1"/>
+    <menuitem id="menu_transport_booking" name="Bookings" parent="menu_transport_operations" action="action_transport_booking" sequence="2"/>
+    <menuitem id="menu_transport_inbound_manifest" name="Inbound Consignment Batch" parent="menu_transport_operations" action="action_transport_inbound_manifest" sequence="3"/>
+    <menuitem id="menu_transport_movement_parent" name="Movement Management" parent="menu_transport_operations" action="action_transport_movement" sequence="4"/>
+    <menuitem id="menu_transport_internal_manifest" name="Internal Transfer Manifest" parent="menu_transport_operations" action="action_transport_manifest" sequence="5"/>
+    <menuitem id="menu_transport_hub_operation" name="Hub/Godwan Operation" parent="menu_transport_operations" action="action_transport_hub_inventory" sequence="6"/>
+    <!-- <menuitem id="menu_transport_despatch" name="Despatch Management" parent="menu_transport_operations" action="action_dummy" sequence="7"/> -->
+    <!--movement-->
+    <!-- <menuitem id="menu_movement_all" name="All Movements" parent="menu_transport_movement_parent" action="action_transport_movement" sequence="10"/>
+    <menuitem id="menu_movement_planned" name="Planned Movements" parent="menu_transport_movement_parent" action="action_transport_booking" sequence="20"/>
+    <menuitem id="menu_movement_intransit" name="In-Transit Movements" parent="menu_transport_movement_parent" action="action_transport_booking" sequence="30"/>
+    <menuitem id="menu_movement_completed" name="Completed Movements" parent="menu_transport_movement_parent" action="action_transport_booking" sequence="40"/>
+    -->
 
-    <menuitem id="menu_transport_booking" name="Customer Bookings" parent="menu_transport_operations" action="action_transport_booking" sequence="1"/>
-    <menuitem id="menu_transport_delivery" name="Delivery Management" parent="menu_transport_operations" action="action_transport_delivery" sequence="2"/>
+    <!-- <menuitem id="menu_transport_delivery" name="Delivery Management" parent="menu_transport_operations" action="action_transport_delivery" sequence="10"/> -->
 
     <!-- <menuitem id="menu_transport_trip" name="Trips" parent="menu_transport_operations" action="action_dummy" sequence="2"/> -->
 
@@ -32,8 +43,8 @@
     <!-- ===================== -->
     <!-- Billing -->
     <!-- ===================== -->
-    <menuitem id="menu_transport_billing" name="Billing" parent="menu_transport_root" sequence="50"/>
-    <menuitem id="menu_transport_billing_customer_invoices" name="Customer Invoices" parent="menu_transport_billing" action="action_dummy" sequence="1"/>
+    <menuitem id="menu_transport_billing" name="Billing &amp; Invoices" parent="menu_transport_root" sequence="50"/>
+    <menuitem id="menu_transport_billing_customer_invoices" name="Customer Invoices" parent="menu_transport_billing" action="action_transport_invoices" sequence="1"/>
     <menuitem id="menu_transport_billing_pending" name="Pending Billing" parent="menu_transport_billing" action="action_dummy" sequence="2"/>
     <menuitem id="menu_transport_billing_consolidated" name="Consolidated Invoice" parent="menu_transport_billing" action="action_dummy" sequence="3"/>
     <menuitem id="menu_transport_billing_vendor_bills" name="Vendor Bills" parent="menu_transport_billing" action="action_dummy" sequence="4"/>
@@ -56,7 +67,9 @@
     <menuitem id="menu_transport_city" name="Service City" parent="menu_transport_master" action="action_transport_city" sequence="5"/>
     <menuitem id="menu_transport_location" name="Locations" parent="menu_transport_master" action="action_transport_location" sequence="10"/>
     <menuitem id="menu_transport_movement" name="Movements" parent="menu_transport_master" action="action_transport_movement" sequence="20"/>
-    <menuitem id="menu_transport_route" name="Routes" parent="menu_transport_master" action="action_transport_route" sequence="30"/>
+    <menuitem id="menu_transport_goodtypes" name="Good Types" parent="menu_transport_master" action="action_transport_goods_type" sequence="30"/>
+    <menuitem id="menu_transport_movement" name="Route Plan" parent="menu_transport_master" action="action_transport_route_plan" sequence="40"/>
+    <menuitem id="menu_transport_b2b_rate" name="B2B Rate Master" parent="menu_transport_master" action="action_transport_b2b_rate" sequence="50"/>
 
 
     <!-- <menuitem id="menu_transport_vehicle" name="Vehicles" parent="menu_transport_master" action="action_transport_vehicle_list" sequence="1"/>

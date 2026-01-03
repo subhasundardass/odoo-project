@@ -6,16 +6,16 @@
     <field name="arch" type="xml">
       <tree>
         <field name="name"/>
-
+        <field name="docket_no"/>
         <field name="partner_id" string="Party"/>
         <field name="pickup_location_id"/>
         <field name="delivery_location_id"/>
         <field name="freight_amount"/>
-        <!-- <field name="gst_amount"/> -->
+        <field name="booking_source_ref" string="Booking Ref"/>
         <field name="total_amount"/>
         <field name="advance_amount"/>
         <field name="balance_amount"/>
-        <field name="state"/>
+        <field name="state" widget="badge" decoration-primary="state == 'draft'" decoration-info="state == 'confirmed'" decoration-success="state == 'planned'" decoration-muted="state == 'cancel'"/>
         <field name="create_date"/>
         <field name="create_uid"/>
       </tree>
@@ -27,22 +27,33 @@
     <field name="model">transport.booking</field>
     <field name="arch" type="xml">
       <form>
+        <field name="all_legs_completed" invisible="1"/>
         <header attrs="{'invisible': [('id', '=', False)]}">
 
-          <!-- ✅ CONFIRM BUTTON AT TOP -->
-          <button name="action_confirm_booking" confirm="Are you sure you want to confirm this booking?" string="Confirm" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+          <!-- Cancel -->
+          <button name="action_cancel" string="Cancel" type="object" confirm="Are you sure?" states="draft,confirmed" class="btn-danger"/>
 
-          <!-- ✅ CANCEL BUTTON AT TOP -->
-          <button name="action_cancel" confirm="Are you sure you want to cancel this booking?" string="Cancel Bill" type="object" class="btn-secondary" attrs="{'invisible': [('state', '=', 'cancelled')]}"/>
+          <!-- Confirm -->
+          <button name="action_confirm_booking" string="Confirm" type="object" states="draft" class="btn-primary"/>
 
-          <button name="action_make_draft" confirm="Are you sure you want to move this booking back to Draft?" string="Make Draft" type="object" class="btn-warning" attrs="{'invisible': [('state', 'in', ['draft', 'in_transit', 'delivered'])]}"/>
+          <!-- Make Draft -->
+          <button name="action_make_draft" string="Make Draft" type="object" states="confirmed" class="btn-warning"/>
 
-          <!-- ✅ Print Bill -->
-          <button name="%(action_transport_booking_bill)d" string="Print Bill" type="action" class="btn-primary" attrs="{'invisible': ['|', ('id', '=', False), ('state', '!=', 'confirmed')]}"/>
-          <!-- ✅ STATUS BAR AT TOP -->
+          <!-- Start Transit -->
+          <!-- <button name="action_start_transit" type="object" string="Start Transit" states="planned" class="btn-primary"/> -->
+
+          <!-- Mark Delivered -->
+          <!-- <button name="action_open_delivery_wizard" type="object" string="Mark Delivered" class="btn-success" states="in_transit" attrs="{'invisible': [('all_legs_completed', '=', False)]}"/> -->
+
+          <!-- Delivery Failed -->
+          <!-- <button name="action_delivery_failed" type="object" string="Delivery Failed" class="btn-danger" states="in_transit" attrs="{'invisible': [('all_legs_completed', '=', False)]}"/> -->
+
+          <!-- Print -->
+          <button name="%(action_transport_booking_bill)d" string="Print Bill" type="action" class="btn-secondary" states="delivered"/>
+
           <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_transit,delivered" nolabel="1"/>
-
         </header>
+
         <sheet>
           <!-- FORM TITLE -->
           <div class="oe_title">
@@ -58,6 +69,7 @@
                   'default_owner_type': 'customer',
                   'default_location_type': 'spoke',
               }" />
+              <field name="docket_no"/>
             </group>
             <group>
               <field name="name"/>
@@ -66,6 +78,7 @@
                   'default_owner_type': 'customer',
                   'default_location_type': 'spoke',
               }"/>
+              <field name="sales_person"/>
             </group>
           </group>
 
@@ -85,18 +98,29 @@
                 </tree>
               </field>
             </page>
+            <page string="Movement Plan">
+              <!-- Route Plan Selection -->
+              <field name="route_plan_id" attrs="{
+                   'readonly': [('state', '!=', 'draft')],
+                   'required': [('state', 'in', ['planned', 'confirmed', 'in_transit'])]
+               }" />
 
-            <page string="Movement" attrs="{'invisible': [('state','=','draft')]}">
+              <field name="route_plan_line_ids" readonly="1">
+                <tree create="0" delete="0">
+                  <field name="sequence"/>
+                  <field name="origin_location_id"/>
+                  <field name="destination_location_id"/>
+                </tree>
+              </field>
+            </page>
+            <page string="Movement Legs" attrs="{'invisible': [('state','in',['draft','confirmed'])]}">
               <!-- LOAD MOVEMENT LEGS FROM MOVEMENT -->
-              <!-- <field name="movement_id" invisible="1"/> -->
-              <field name="movement_leg_ids" nolabel="1" readonly="1">
+              <field name="movement_leg_ids" nolabel="1" readonly="1" options="{'reload_on_change': True}">
                 <tree create="0" edit="0" delete="0">
-                  <field name="sequence" class="text-left" string="Seq"/>
-                  <field name="from_location_id"/>
-                  <field name="to_location_id"/>
-                  <field name="carrier_type"/>
-                  <field name="responsible_by"/>
-                  <field name="third_party_partner_id"/>
+                  <field name="sequence" class="text-left" string="Seq" readonly="1"/>
+                  <field name="from_location_id" readonly="1"/>
+                  <field name="to_location_id" readonly="1"/>
+                  <!-- <field name="third_party_partner_id"/> -->
                   <field name="state"/>
                 </tree>
               </field>
@@ -105,36 +129,39 @@
 
           </notebook>
 
-          <group string="Billing" col="3">
-            <!-- ✅ LEFT COLUMN -->
-            <group>
-              <field name="freight_amount" string="Charged Amount" required="1"/>
-              <field name="advance_amount" string="Advance Amount"/>
-              <field name="docket_charge" string="Docket Charge"/>
-              <field name="gst_rate" string="GST(%)" required="1"/>
-            </group>
+          <div class="o_form_group_frame">
+            <div class="o_form_group_title">Billing Information</div>
+            <group col="3">
+              <!-- ✅ LEFT COLUMN -->
+              <group>
+                <field name="freight_amount" string="Charged Amount" required="1"/>
+                <field name="advance_amount" string="Advance Amount"/>
+                <field name="docket_charge" string="Docket Charge"/>
+                <field name="gst_rate" string="GST(%)" required="1"/>
+              </group>
 
-            <!-- ✅ MIDDLE COLUMN -->
-            <group>
-              <field name="value_surcharge" string="Value Surcharge"/>
-              <field name="fuel_surcharge" string="Fuel Surcharge"/>
-              <field name="handling_charge" string="Handling Charge"/>
-            </group>
+              <!-- ✅ MIDDLE COLUMN -->
+              <group>
+                <field name="value_surcharge" string="Value Surcharge"/>
+                <field name="fuel_surcharge" string="Fuel Surcharge"/>
+                <field name="handling_charge" string="Handling Charge"/>
+              </group>
 
-            <!-- ✅ RIGHT COLUMN -->
-            <group>
-              <field name="oda_charge" string="ODA Charge"/>
-              <field name="other_charge" string="Other Charge"/>
-              <field name="gst_amount" string="GST Total"/>
-              <field name="total_amount" string="Grand Total" required="1"/>
-              <label for="balance_amount" string="Amount Due"/>
-              <div>
-                <span style="font-weight:700; font-size:14px; color:#d32f2f;">
-                  <field name="balance_amount" nolabel="1" readonly="1"/>
-                </span>
-              </div>
+              <!-- ✅ RIGHT COLUMN -->
+              <group>
+                <field name="oda_charge" string="ODA Charge"/>
+                <field name="other_charge" string="Other Charge"/>
+                <field name="gst_amount" string="GST Total"/>
+                <field name="total_amount" string="Grand Total" required="1"/>
+                <label for="balance_amount" string="Amount Due"/>
+                <div>
+                  <span style="font-weight:700; font-size:14px; color:#d32f2f;">
+                    <field name="balance_amount" nolabel="1" readonly="1"/>
+                  </span>
+                </div>
+              </group>
             </group>
-          </group>
+          </div>
 
           <group string="Other Information" col="3">
             <group>
@@ -144,14 +171,8 @@
               <field name="dispatch_mode" string="Mode of Dispatch"/>
             </group>
           </group>
-
-
-
         </sheet>
-        <!-- <footer>
-          <button string="Confirm" type="object" name="action_confirm" class="btn-primary"/>
-          <button string="Cancel" type="object" name="action_cancel" class="btn-secondary"/>
-        </footer> -->
+
       </form>
     </field>
   </record>
@@ -161,6 +182,5 @@
     <field name="res_model">transport.booking</field>
     <field name="view_mode">tree,form</field>
   </record>
-
 
 </odoo>

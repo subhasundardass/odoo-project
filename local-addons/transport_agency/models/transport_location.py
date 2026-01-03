@@ -4,71 +4,109 @@ from odoo.exceptions import ValidationError
 
 class TransportLocation(models.Model):
     _name = "transport.location"
-    _description = "Transport Location (Hub / Spoke / Handover)"
-    _rec_name = "name"
+    _description = "Transport Location"
+    _rec_name = "display_name"
 
     # ---------------------------------------------------------
     # BASIC INFO
     # ---------------------------------------------------------
-    name = fields.Char(string="Location Name", required=True)
-    code = fields.Char(string="Short Code", help="3-6 character code for routing maps")
+    name = fields.Char(string="Name", required=True)
+    code = fields.Char(
+        string="Short Code",
+        help="3–6 character code used in routing and documents",
+    )
 
     address = fields.Text(string="Address")
+
     city_id = fields.Many2one("transport.city", string="City", required=True)
-    # auto loaded from city
+
     state_id = fields.Many2one(
-        "res.country.state", related="city_id.state_id", store=True
-    )
-    country_id = fields.Many2one(
-        "res.country", related="city_id.country_id", store=True
+        "res.country.state",
+        related="city_id.state_id",
+        store=True,
     )
 
-    # ---------------------------------------------------------
-    # OWNERSHIP
-    # ---------------------------------------------------------
-    owner_type = fields.Selection(
-        [
-            ("own", "Own Hub / Office"),
-            ("customer", "Customer Spoke"),
-            ("third_party", "Third Party Hub"),
-        ],
-        string="Location Owned By",
-        required=True,
-        default="own",
+    country_id = fields.Many2one(
+        "res.country",
+        related="city_id.country_id",
+        store=True,
     )
 
     partner_id = fields.Many2one(
         "res.partner",
-        string="Customer/Agency",
+        string="Customer / Agency",
         help="Required for customer or third-party locations",
     )
 
     # ---------------------------------------------------------
-    # LOCATION CLASSIFICATION
+    # OWNERSHIP (LEGAL / COMMERCIAL)
     # ---------------------------------------------------------
-    location_type = fields.Selection(
+    owner_type = fields.Selection(
+        [
+            ("own", "Own"),
+            ("customer", "Customer"),
+            ("third_party", "Third Party (Courier / Transporter)"),
+        ],
+        string="Ownership",
+        required=True,
+        default="customer",
+    )
+
+    # ---------------------------------------------------------
+    # ROUTING ROLE (NETWORK STRUCTURE)
+    # ---------------------------------------------------------
+    routing_type = fields.Selection(
         [
             ("hub", "Hub"),
             ("spoke", "Spoke"),
         ],
-        string="Location Type",
+        string="Network Role",
         required=True,
         default="spoke",
+        help="Hub = central operational hub, Spoke = pickup/delivery points",
     )
 
-    # Parent hub for spokes (optional)
-    parent_hub_id = fields.Many2one(
-        "transport.location",
-        string="Parent Hub (Optional)",
-        domain="[('location_type','=','hub')]",
+    # ---------------------------------------------------------
+    # OPERATIONAL ROLE (REAL WORLD)
+    # This field is used for routing, leg generation, and TMS logic
+    # ---------------------------------------------------------
+    operational_type = fields.Selection(
+        [
+            ("hub", "Hub Operations"),
+            ("pickup_point", "Pickup "),
+            ("delivery_point", "Delivery"),
+            ("handover_point", "Handover"),
+        ],
+        string="Operational Role",
+        required=True,
+        default="pickup_point",
+        help="What your team does at this location",
+    )
+
+    facility_type = fields.Selection(
+        [
+            ("warehouse", "Warehouse / Hub"),
+            ("customer_site", "Customer Address"),
+            ("railway", "Railway Station"),
+            ("airport", "Airport"),
+            ("bus_stand", "Bus Stand"),
+            ("dock", "Dock / Port"),
+            ("yard", "Open Yard"),
+        ],
+        string="Category",
+        help="Physical nature of this location",
     )
 
     # ---------------------------------------------------------
     # RESPONSIBILITY CONTROL
     # ---------------------------------------------------------
     is_handover_point = fields.Boolean(
-        string="Final Handover Point",
-        help="If enabled, routing will not generate legs beyond this location.",
+        string="Handover Point",
+        help=(
+            "Marks responsibility boundary. "
+            "Movement plans can start or end here, "
+            "but routing will NOT auto-extend beyond this point."
+        ),
     )
 
     # ---------------------------------------------------------
@@ -77,128 +115,139 @@ class TransportLocation(models.Model):
     active = fields.Boolean(default=True)
 
     # ---------------------------------------------------------
-    # VALIDATIONS
+    # DISPLAY
+    # ---------------------------------------------------------
+    display_name = fields.Char(
+        compute="_compute_display_name",
+        store=True,
+    )
+
+    # ---------------------------------------------------------
+    # COMPUTES
+    # ---------------------------------------------------------
+    @api.depends("name", "city_id")
+    def _compute_display_name(self):
+        for rec in self:
+            rec.display_name = (
+                f"{rec.name} - {rec.city_id.name}" if rec.city_id else rec.name
+            )
+
+    # ---------------------------------------------------------
+    # ONCHANGE
     # ---------------------------------------------------------
     @api.onchange("owner_type")
     def _onchange_owner_type(self):
-        """Automatically set location type & clear parent hub."""
+        """
+        Ownership should not force routing hubs.
+        """
         if self.owner_type == "own":
-            self.location_type = "hub"
+            self.routing_type = "hub"
+        else:
+            self.routing_type = "spoke"
 
-        if self.owner_type == "customer":
-            self.location_type = "spoke"
-
-        if self.owner_type == "third_party":
-            self.location_type = "hub"
-
-        # Customer locations or own hubs don't need parent hub by default
-        self.parent_hub_id = False
-
-    @api.constrains("owner_type", "location_type", "parent_hub_id")
-    def _check_consistency(self):
-        for rec in self:
-
-            # Own = Hub always
-            if rec.owner_type == "own" and rec.location_type != "hub":
-                raise ValidationError("Own locations must be Hubs.")
-
-            # Customer = Spoke always
-            if rec.owner_type == "customer" and rec.location_type != "spoke":
-                raise ValidationError("Customer-owned locations must be Spokes.")
-
-            # Third party = Hub always
-            if rec.owner_type == "third_party" and rec.location_type != "hub":
-                raise ValidationError("Third-party locations must be Hubs.")
-
-            # Hub cannot have parent hub
-            if rec.location_type == "hub" and rec.parent_hub_id:
-                raise ValidationError("Hub cannot have a parent hub.")
-
-            # Spoke cannot be handover point
-            if rec.location_type == "spoke" and rec.is_handover_point:
-                raise ValidationError("Only hubs can be handover points.")
-
-            # Customer locations require partner
-            if rec.owner_type == "customer" and not rec.partner_id:
-                raise ValidationError("Customer locations must have a linked Customer.")
-
-    # ------------------------------------------
-    # Hooks
     # ---------------------------------------------------------
-    def name_get(self):
-        result = []
+    # VALIDATIONS
+    # ---------------------------------------------------------
+    @api.onchange("owner_type", "operational_type")
+    def _onchange_owner_and_operation(self):
         for rec in self:
-            name = rec.name
-            # Append city if available
-            if rec.city_id:
-                name = f"{name} - {rec.city_id.name}"
+            # Reset first (important)
+            rec.is_handover_point = False
 
-            result.append((rec.id, name))
-        return result
+            # -------------------------
+            # CUSTOMER LOCATIONS
+            # -------------------------
+            if rec.owner_type == "customer":
+                rec.routing_type = "spoke"
+                rec.operational_type = "pickup_point"
+
+            # -------------------------
+            # THIRD PARTY LOCATIONS
+            # -------------------------
+            elif rec.owner_type == "third_party":
+                rec.routing_type = "spoke"
+
+                # Handover only when operational pickup/drop
+                if rec.operational_type in ("pickup_point", "drop_point"):
+                    rec.is_handover_point = True
+
+            # -------------------------
+            # OWN LOCATIONS
+            # -------------------------
+            elif rec.owner_type == "own":
+                # Do NOT force hub
+                rec.is_handover_point = False
+
+    @api.constrains("owner_type", "partner_id")
+    def _check_partner_requirement(self):
+        for rec in self:
+            if rec.owner_type in ("customer", "third_party") and not rec.partner_id:
+                raise ValidationError(
+                    "Customer or Third-Party locations must have a linked partner."
+                )
+
+    @api.constrains("is_handover_point", "routing_type")
+    def _check_handover_rules(self):
+        for rec in self:
+            if rec.is_handover_point and rec.routing_type == "hub":
+                raise ValidationError("Handover points cannot be routing hubs.")
+
+    @api.constrains("operational_type", "owner_type")
+    def _check_operational_validity(self):
+        for rec in self:
+
+            # if rec.owner_type == "own" and rec.operational_type != "hub":
+            #     raise ValidationError("Own locations must have operational type 'Hub'.")
+
+            if rec.owner_type == "customer" and rec.operational_type == "hub":
+                raise ValidationError(
+                    "Customer locations cannot be operational hubs by default."
+                )
+
+    @api.constrains("routing_type", "owner_type")
+    def _check_routing_hub(self):
+        for rec in self:
+            if rec.routing_type == "hub" and rec.owner_type != "own":
+                raise ValidationError(
+                    "Only own locations can be routing hubs by default. "
+                    "Use admin override for exceptions."
+                )
+
+    @api.constrains("operational_type", "facility_type")
+    def _check_operational_vs_facility(self):
+        for rec in self:
+            # pickup_point should not be hub
+            if (
+                rec.operational_type == "pickup_point"
+                and rec.facility_type == "warehouse"
+            ):
+                raise ValidationError(
+                    "Pickup points should not be marked as warehouse."
+                )
+            # hub must be own
+            if rec.operational_type == "hub" and rec.owner_type != "own":
+                raise ValidationError("Only own locations can be operational hubs.")
+
+    # ---------------------------------------------------------
+    # CREATE HOOK (SAFE)
+    # ---------------------------------------------------------
+    def unlink(self):
+        for rec in self:
+            used = self.env["transport.movement"].search_count(
+                [("location_ids", "in", rec.id)]
+            )
+            if used:
+                raise ValidationError(
+                    "Location is already used in movements and cannot be deleted."
+                )
+        return super().unlink()
 
     @api.model
     def create(self, vals):
         rec = super().create(vals)
 
-        # ------------------------------------------------------------
-        # RULE 1: SPOKE LOCATION → Parent hub required ONLY IF
-        #         the city has hub locations
-        # ------------------------------------------------------------
-        if rec.location_type == "spoke":
-
-            # Check if this city already has hub locations
-            hub_locations = self.search(
-                [
-                    ("city_id", "=", rec.city_id.id),
-                    ("location_type", "=", "hub"),
-                ],
-                limit=1,
-            )
-
-            if hub_locations:
-                # City has hubs → parent hub is required
-                if not rec.parent_hub_id:
-                    raise ValidationError(
-                        f"Spoke location '{rec.name}' must have a parent hub because "
-                        f"city '{rec.city_id.name}' has hub locations."
-                    )
-            else:
-                # City has NO hubs → parent hub must NOT be required
-                # (Business case: direct delivery from main hub)
-                pass
-
-            # Auto-create spoke → hub route (ONLY if parent hub exists)
-            if rec.parent_hub_id:
-                self.env["transport.route.template"].create(
-                    {
-                        "name": f"{rec.name} → {rec.parent_hub_id.name}",
-                        "source_location_id": rec.id,
-                        "destination_location_id": rec.parent_hub_id.id,
-                    }
-                )
-
-        # ------------------------------------------------------------
-        # RULE 2: HUB LOCATION → Create hub↔hub routes with existing hubs
-        # ------------------------------------------------------------
-        if rec.location_type == "hub":
-            all_hubs = self.search([("location_type", "=", "hub")]) - rec
-
-            for hub in all_hubs:
-                # Hub → Existing hubs
-                self.env["transport.route.template"].create(
-                    {
-                        "name": f"{rec.name} → {hub.name}",
-                        "source_location_id": rec.id,
-                        "destination_location_id": hub.id,
-                    }
-                )
-                # Existing hubs → new hub
-                self.env["transport.route.template"].create(
-                    {
-                        "name": f"{hub.name} → {rec.name}",
-                        "source_location_id": hub.id,
-                        "destination_location_id": rec.id,
-                    }
-                )
+        # IMPORTANT:
+        # No auto route creation here.
+        # Routes must be explicit via transport.route.template
 
         return rec
